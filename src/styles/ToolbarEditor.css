@@ -1,0 +1,7 @@
+.toobarDiv {
+    height: 96vh;
+    width: 20%;
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;
+    flex-wrap: nowrap;
+}

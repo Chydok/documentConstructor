@@ -1,26 +1,33 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { observer } from 'mobx-react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import MainMenu from './components/MainMenu';
+import SvgBlock from './components/workingPanel/SvgBlock';
+import ToolbarEditor from './components/toolbarEditor/ToolbarEditor';
+
+import templateInfoStore from './store/templateInfoStore';
+
+import './styles/App.css';
+
+
+const testXml = require('./production_log.xml');
+fetch(testXml).then(response => response.text()).then(text => {
+    const parser: DOMParser = new DOMParser();
+    const xmlDoc: Document = parser.parseFromString(text, 'text/xml');
+
+    templateInfoStore.setTemplateInfo(xmlDoc.documentElement);
+});
+
+const App = () => {
+    return (
+        <>
+            <MainMenu />
+            <div className='workDiv'>
+                <SvgBlock />
+                <ToolbarEditor />
+            </div>
+        </>
+    );
 }
 
-export default App;
+export default observer(App);
