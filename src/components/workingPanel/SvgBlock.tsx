@@ -1,7 +1,6 @@
 import * as d3 from "d3";
 import { observer } from "mobx-react";
 import ReactFauxDom from 'react-faux-dom';
-import {renderToString} from 'react-dom/server'
 
 import templateInfoStore from '../../store/templateInfoStore';
 
@@ -17,7 +16,7 @@ const SvgBlock = () => {
         .attr('height', templateInfoStore.templateAttr.height)
         .style('background-color', 'white');
 
-    templateItems.map((item, itemKey) => {
+    templateItems.forEach((item, itemKey) => {
         const newGroup = d3.select(svgSpace)
                 .append('g')
                 .attr('class', 'newGroup')
@@ -49,7 +48,7 @@ const SvgBlock = () => {
     useEffect(()=>{
         const delta = {x: 0, y: 0};
         d3.selectAll('g.newGroup')
-            .data(templateInfoStore.templateItems)
+            .data(templateItems)
             .call(d3.drag<any, any>()
                 .on('start', (event, d) => {
                     const currentX = +d.attributes['x'];
@@ -64,7 +63,7 @@ const SvgBlock = () => {
                     const y = moveY > 0 ? moveY : 0;
                     templateInfoStore.changeCoord(d.name, x, y);
                 }));
-    }, [templateInfoStore.templateItems]);
+    }, [templateItems]);
 
     return (
         <div className="svgDiv">
