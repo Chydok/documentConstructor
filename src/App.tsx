@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 
 import MainMenu from './components/MainMenu';
 import SvgBlock from './components/workingPanel/SvgBlock';
-import ToolbarEditor from './components/toolbarEditor/ToolbarEditor';
+import ToolbarEditor from './components/constructorToolbar/ConstructorToolbar';
 
 import templateInfoStore from './store/templateInfoStore';
 

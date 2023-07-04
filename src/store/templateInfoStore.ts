@@ -25,8 +25,12 @@ class templateInfoStore {
     }
 
     setTemplateInfo = (xml: HTMLElement) => {
-        this.templateAttr.width = xml.attributes.getNamedItem('width') ? Number(xml.attributes.getNamedItem('width')) : this.templateAttr.width;
-        this.templateAttr.height = xml.attributes.getNamedItem('height') ? Number(xml.attributes.getNamedItem('height')) : this.templateAttr.height;
+        if (xml.attributes.getNamedItem('width') && xml.attributes.getNamedItem('width')?.nodeValue) {
+            this.templateAttr.width = +xml.attributes.getNamedItem('width')?.nodeValue!;
+        }
+        if (xml.attributes.getNamedItem('height')) {
+            this.templateAttr.height = +xml.attributes.getNamedItem('height')?.nodeValue!;
+        }
         this.templateItems = xmlToArray(xml);
     }
 

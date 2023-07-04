@@ -1,7 +1,7 @@
 import { observer } from "mobx-react";
-import '../../styles/ToolbarEditor.css';
+import '../../styles/ConstructorToolbar.css';
 
-const ToolbarEditor = () => {
+const ConstructorToolbar = () => {
     return (
         <div className="toobarDiv">
             <div>
@@ -19,4 +19,4 @@ const ToolbarEditor = () => {
     );
 }
 
-export default observer(ToolbarEditor);
+export default observer(ConstructorToolbar);
