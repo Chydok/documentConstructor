@@ -39,6 +39,18 @@ class templateInfoStore {
         findElem!.attributes['x'] = x;
         findElem!.attributes['y'] = y;
     }
+
+    setAttrib = (elemId: string, attribName: string, value: string | number) => {
+        const findItem = this.templateItems.find(item => {
+            if (item.attributes['id'] === elemId) {
+                return item;
+            }
+            return item.children.find((childrenItem => childrenItem.attributes['id'] === elemId));
+        });
+        if (typeof findItem !== 'undefined') {
+            findItem.attributes[attribName] = value;
+        }
+    }
 }
 
 /* eslint import/no-anonymous-default-export: [2, {"allowNew": true}] */

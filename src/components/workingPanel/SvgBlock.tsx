@@ -30,8 +30,8 @@ const SvgBlock = () => {
             newGroup.append('foreignObject')
                 .attr('x', +item.attributes['x'])
                 .attr('y', +item.attributes['y'])
-                .attr('width', '400')
-                .attr('height', '200')
+                .attr('width', item.attributes['width'])
+                .attr('height', item.attributes['height'])
                 .append('xhtml:div')
                     // @ts-ignore
                     .html(simpleTable);
