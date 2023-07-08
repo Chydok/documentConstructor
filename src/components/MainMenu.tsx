@@ -8,7 +8,7 @@ import { storeToXml } from '../util/parser';
 const MainMenu = () => {
     return (
         <div className='mainDiv'>
-            <div className='mainInfo'>Document Editor</div>
+            <div className='mainInfo'>Document Constructor</div>
             <button 
                 className='menuSaveButton'
                 onClick={() => {

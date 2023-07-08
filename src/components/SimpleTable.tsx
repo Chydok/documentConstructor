@@ -3,75 +3,95 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import { observer } from 'mobx-react';
 import templateInfoStore from '../store/templateInfoStore';
 
-const SimpleTable = (props: {itemTableKey: number}) => {
+const SimpleTable = (props: {itemTableKey: number, tableView?: boolean}) => {
     const table = templateInfoStore.templateItems[props.itemTableKey];
     let tableWidth = 0;
     let tableHeight = 0;
 
-    const theader = table.children.filter(item => item.name === 'columns').map((row, rowIndex) => {
-        tableHeight += row.attributes['height'] ? row.attributes['height'] : 100;
+    const tableRow = (rowType: string) => table.children.filter(item => item.name === rowType).map(row => {
+        tableHeight += +row.attributes['height'];
         return (
-            <TableRow 
+            <TableRow
                 key={row.attributes['id']}
-                sx={{height: row.attributes['height']}}
+                sx={{
+                    height: +row.attributes['height'],
+                }}
                 >
                 {row.children.map(cell => {
-                    tableWidth += cell.attributes['width'] ? row.attributes['width'] : 25;
+                    if (rowType === 'columns') {
+                        tableWidth += cell.attributes['width'] ? +row.attributes['width'] : 25;
+                    }
                     return (
                         <TableCell
                             key={cell.attributes['id']}
                             style={{
-                                minWidth: cell.attributes['width'] || 20,
-                                maxWidth: cell.attributes['width'] || 20,
-                                height: row.attributes['height'] ? row.attributes['height'] : 100,
-                                backgroundColor: 'white'
+                                minWidth: +cell.attributes['width'] || 25,
+                                maxWidth: +cell.attributes['width'] || 25,
+                                lineHeight: 1,
+                                backgroundColor: 'white',
+                                overflow: 'hidden',
+                                textOverflow: 'clip'
                             }}
                         >
-                            {cell.attributes['dms:title']}
+                            {rowType === 'columns' ? cell.attributes['dms:title'] : cell.name}
                         </TableCell>);
                 })}
             </TableRow>
         )
     });
 
-    const tbody = table.children.filter(item => item.name === 'record').map((row, rowIndex) => {
-        tableHeight += row.attributes['height'] ? row.attributes['height'] : 100;
-        return (
-            <TableRow 
-                key={row.attributes['id']}
-                sx={{height: row.attributes['height']}}
-                >
-                {row.children.map(cell => {
-                    return (
-                        <TableCell
-                            key={cell.attributes['id']}
-                            style={{
-                                minWidth: cell.attributes['width'] || 20,
-                                maxWidth: cell.attributes['width'] || 20,
-                                height: row.attributes['height'] ? row.attributes['height'] : 100,
-                                backgroundColor: 'white'
-                            }}
-                        >
-                            {cell.name}
-                        </TableCell>);
-                })}
-            </TableRow>
-        )
-    });
+    const viewRow = () => {
+            const xmlDoc = templateInfoStore.dataXml;
+            if (xmlDoc) {
+                const tableInfo = xmlDoc.getElementsByTagName(table.name)[0];
+                return Array.from(tableInfo.getElementsByTagName('record')).map((recordInfo, keyRI) => {
+                    return table.children.filter(item => item.name === 'record').map(row => {
+                        return (
+                            <TableRow
+                                key={row.attributes['id'] + keyRI}
+                                sx={{
+                                    height: +row.attributes['height'],
+                                }}
+                                >
+                                {row.children.map(cell => {
+                                    return (
+                                        <TableCell
+                                            key={cell.attributes['id'] + keyRI}
+                                            style={{
+                                                minWidth: +cell.attributes['width'] || 25,
+                                                maxWidth: +cell.attributes['width'] || 25,
+                                                lineHeight: 1,
+                                                backgroundColor: 'white',
+                                                overflow: 'hidden',
+                                                textOverflow: 'clip'
+                                            }}
+                                        >
+                                            {recordInfo.getElementsByTagName(cell.name)[0].textContent}
+                                        </TableCell>);
+                                })}
+                            </TableRow>
+                    )});
+                });
+            } else {
+                return <></>
+            }
+    };
 
     useEffect(() => {
-        templateInfoStore.setAttrib(table.attributes['id'], 'width', tableWidth);
-        templateInfoStore.setAttrib(table.attributes['id'], 'height', tableHeight);
-    }, [table.attributes, theader, tbody, tableWidth, tableHeight])
+        if (!props.tableView) {
+            templateInfoStore.setAttrib(table.attributes['id'], 'width', tableWidth);
+            templateInfoStore.setAttrib(table.attributes['id'], 'height', tableHeight);
+        }
+    }, [table.attributes, tableWidth, tableHeight]);
 
     return (
         <TableContainer component={Paper}>
         <Table padding='none'>
           <TableHead>
-            {theader}
+            {tableRow('columns')}
           </TableHead>
           <TableBody>
-            {tbody}
+            {props.tableView ? viewRow() : tableRow('record')}
           </TableBody>
         </Table>
       </TableContainer>

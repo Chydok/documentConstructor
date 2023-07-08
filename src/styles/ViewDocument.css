@@ -1,0 +1,10 @@
+.viewDiv {
+    display: flex;
+    justify-content: center;
+    height: 98vh;
+    width: 100%;
+    border-bottom: 1px solid black;
+    flex-wrap: nowrap;
+    background-color: darkgray;
+    overflow: auto;
+}

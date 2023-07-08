@@ -19,6 +19,7 @@ class templateInfoStore {
         width: 1240,
         height: 550,
     };
+    dataXml?: Document;
 
     constructor() {
         makeAutoObservable(this);
@@ -50,6 +51,14 @@ class templateInfoStore {
         if (typeof findItem !== 'undefined') {
             findItem.attributes[attribName] = value;
         }
+    }
+
+    removeStore = () => {
+        this.templateItems = [];
+        this.templateAttr = {
+            width: 1240,
+            height: 550,
+        };
     }
 }
 

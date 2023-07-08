@@ -4,27 +4,46 @@ import { observer } from 'mobx-react';
 import MainMenu from './components/MainMenu';
 import SvgBlock from './components/workingPanel/SvgBlock';
 import ToolbarEditor from './components/constructorToolbar/ConstructorToolbar';
-
-import templateInfoStore from './store/templateInfoStore';
+import ViewDocument from './components/viewDocument/ViewDocument';
 
 import './styles/App.css';
+import templateInfoStore from './store/templateInfoStore';
 
+templateInfoStore.removeStore();
 
-const testXml = require('./production_log.xml');
-fetch(testXml).then(response => response.text()).then(text => {
-    const parser: DOMParser = new DOMParser();
-    const xmlDoc: Document = parser.parseFromString(text, 'text/xml');
+if (window.location.pathname === '/') {
+    const testXml = require('./production_log.xml');
+    fetch(testXml).then(response => response.text()).then(text => {
+        const parser: DOMParser = new DOMParser();
+        const xmlDoc: Document = parser.parseFromString(text, 'text/xml');
 
-    templateInfoStore.setTemplateInfo(xmlDoc.documentElement);
-});
+        templateInfoStore.setTemplateInfo(xmlDoc.documentElement);
+    });
+} 
+if (window.location.pathname === '/view') {
+    const testXml = require('./data.xml');
+    fetch(testXml).then(response => response.text()).then(text => {
+        const parser: DOMParser = new DOMParser();
+        const xmlDoc: Document = parser.parseFromString(text, 'text/xml');
+
+        templateInfoStore.setTemplateInfo(xmlDoc.documentElement);
+    });
+    const testXmlView = require('./dataView.xml');
+    fetch(testXmlView).then(response => response.text()).then(text => {
+        const parser: DOMParser = new DOMParser();
+        const xmlDoc: Document = parser.parseFromString(text, 'text/xml');
+
+        templateInfoStore.dataXml = xmlDoc;
+    });
+}
 
 const App = () => {
     return (
         <>
             <MainMenu />
             <div className='workDiv'>
-                <SvgBlock />
-                <ToolbarEditor />
+                {window.location.pathname === '/' && <><SvgBlock /><ToolbarEditor /></>}
+                {window.location.pathname === '/view' && <><ViewDocument /></>}
             </div>
         </>
     );

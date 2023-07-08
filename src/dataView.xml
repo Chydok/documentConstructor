@@ -1,0 +1,254 @@
+<plan xmlns:dms="dms_namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" date="2018-04-20" md5sum="" version="1.0" id="dms_0" width="1240" height="550">
+	<month_schedule dms:title="Производственный журнал" dms:widget="table" id="dms_month_schedule" dms:headerSticky="true" x="113" y="0" width="975" height="200">
+		<columns section="1" id="dms_7" height="100">
+			<name dms:title="Наименование продукции" id="dms_8" dms:widget="dict-tree-field" dms:dict="allSpecifications" dms:showValueMode="last_value"/>
+			<sub_info dms:title="Партия" id="dms_9" dms:widget="ext-doc-field" dms:docTemplate="productBatches" dms:xpath="/batch/batch_name" dms:ext_xpaths="['/batch/products_number']"/>
+			<cn dms:title="Доп. инфо" dms:widget="string" id="dms_10"/>
+			<free_on_warehouse dms:title="Свободно" id="dms_11" dms:widget="string"/>
+			<number_on_warehouse dms:title="Резерв" id="dms_12" dms:widget="string"/>
+			<day1 dms:title="1" dms:widget="number" id="dms_13"/>
+			<day2 dms:title="2" dms:widget="number" id="dms_14"/>
+			<day3 dms:title="3" dms:widget="number" id="dms_15"/>
+			<day4 dms:title="4" dms:widget="number" id="dms_16"/>
+			<day5 dms:title="5" dms:widget="number" id="dms_17"/>
+			<day6 dms:title="6" dms:widget="number" id="dms_18"/>
+			<day7 dms:title="7" dms:widget="number" id="dms_19"/>
+			<day8 dms:title="8" dms:widget="number" id="dms_20"/>
+			<day9 dms:title="9" dms:widget="number" id="dms_21"/>
+			<day10 dms:title="10" dms:widget="number" id="dms_22"/>
+			<day11 dms:title="11" dms:widget="number" id="dms_23"/>
+			<day12 dms:title="12" dms:widget="number" id="dms_24"/>
+			<day13 dms:title="13" dms:widget="number" id="dms_25"/>
+			<day14 dms:title="14" dms:widget="number" id="dms_26"/>
+			<day15 dms:title="15" dms:widget="number" id="dms_27"/>
+			<day16 dms:title="16" dms:widget="number" id="dms_28"/>
+			<day17 dms:title="17" dms:widget="number" id="dms_29"/>
+			<day18 dms:title="18" dms:widget="number" id="dms_30"/>
+			<day19 dms:title="19" dms:widget="number" id="dms_31"/>
+			<day20 dms:title="20" dms:widget="number" id="dms_32"/>
+			<day21 dms:title="21" dms:widget="number" id="dms_33"/>
+			<day22 dms:title="22" dms:widget="number" id="dms_34"/>
+			<day23 dms:title="23" dms:widget="number" id="dms_35"/>
+			<day24 dms:title="24" dms:widget="number" id="dms_36"/>
+			<day25 dms:title="25" dms:widget="number" id="dms_37"/>
+			<day26 dms:title="26" dms:widget="number" id="dms_38"/>
+			<day27 dms:title="27" dms:widget="number" id="dms_39"/>
+			<day28 dms:title="28" dms:widget="number" id="dms_40"/>
+			<day29 dms:title="29" dms:widget="number" id="dms_41"/>
+			<day30 dms:title="30" dms:widget="number" id="dms_42"/>
+			<day31 dms:title="31" dms:widget="number" id="dms_43"/>
+			<need_write_off dms:title="Списание" dms:widget="number" id="dms_44"/>
+			<need_count dms:title="Нужно сделать" dms:widget="string" id="dms_45"/>
+			<need_days dms:title="Дни сдачи" dms:widget="string" id="dms_46"/>
+		</columns>
+		<record id="dms_47" height="100">
+			<name id="dms_48">Выберите наименование</name>
+			<sub_info id="dms_49"/>
+			<cn id="dms_50"/>
+			<free_on_warehouse id="dms_51"/>
+			<number_on_warehouse id="dms_52"/>
+			<day1 id="dms_53"/>
+			<day2 id="dms_54"/>
+			<day3 id="dms_55"/>
+			<day4 id="dms_56"/>
+			<day5 id="dms_57"/>
+			<day6 id="dms_58"/>
+			<day7 id="dms_59"/>
+			<day8 id="dms_60"/>
+			<day9 id="dms_61"/>
+			<day10 id="dms_62"/>
+			<day11 id="dms_63"/>
+			<day12 id="dms_64"/>
+			<day13 id="dms_65"/>
+			<day14 id="dms_66"/>
+			<day15 id="dms_67"/>
+			<day16 id="dms_68"/>
+			<day17 id="dms_69"/>
+			<day18 id="dms_70"/>
+			<day19 id="dms_71"/>
+			<day20 id="dms_72"/>
+			<day21 id="dms_73"/>
+			<day22 id="dms_74"/>
+			<day23 id="dms_75"/>
+			<day24 id="dms_76"/>
+			<day25 id="dms_77"/>
+			<day26 id="dms_78"/>
+			<day27 id="dms_79"/>
+			<day28 id="dms_80"/>
+			<day29 id="dms_81"/>
+			<day30 id="dms_82"/>
+			<day31 id="dms_83"/>
+			<need_write_off id="dms_84"/>
+			<need_count id="dms_85"/>
+			<need_days id="dms_86"/>
+		</record>
+		<record id="dms_47" height="100">
+			<name id="dms_48">Выберите наименование</name>
+			<sub_info id="dms_49"/>
+			<cn id="dms_50"/>
+			<free_on_warehouse id="dms_51"/>
+			<number_on_warehouse id="dms_52"/>
+			<day1 id="dms_53"/>
+			<day2 id="dms_54"/>
+			<day3 id="dms_55"/>
+			<day4 id="dms_56"/>
+			<day5 id="dms_57"/>
+			<day6 id="dms_58"/>
+			<day7 id="dms_59"/>
+			<day8 id="dms_60"/>
+			<day9 id="dms_61"/>
+			<day10 id="dms_62"/>
+			<day11 id="dms_63"/>
+			<day12 id="dms_64"/>
+			<day13 id="dms_65"/>
+			<day14 id="dms_66"/>
+			<day15 id="dms_67"/>
+			<day16 id="dms_68"/>
+			<day17 id="dms_69"/>
+			<day18 id="dms_70"/>
+			<day19 id="dms_71"/>
+			<day20 id="dms_72"/>
+			<day21 id="dms_73"/>
+			<day22 id="dms_74"/>
+			<day23 id="dms_75"/>
+			<day24 id="dms_76"/>
+			<day25 id="dms_77"/>
+			<day26 id="dms_78"/>
+			<day27 id="dms_79"/>
+			<day28 id="dms_80"/>
+			<day29 id="dms_81"/>
+			<day30 id="dms_82"/>
+			<day31 id="dms_83"/>
+			<need_write_off id="dms_84"/>
+			<need_count id="dms_85"/>
+			<need_days id="dms_86"/>
+		</record>
+		<record id="dms_47" height="100">
+			<name id="dms_48">Выберите наименование</name>
+			<sub_info id="dms_49"/>
+			<cn id="dms_50"/>
+			<free_on_warehouse id="dms_51"/>
+			<number_on_warehouse id="dms_52"/>
+			<day1 id="dms_53"/>
+			<day2 id="dms_54"/>
+			<day3 id="dms_55"/>
+			<day4 id="dms_56"/>
+			<day5 id="dms_57"/>
+			<day6 id="dms_58"/>
+			<day7 id="dms_59"/>
+			<day8 id="dms_60"/>
+			<day9 id="dms_61"/>
+			<day10 id="dms_62"/>
+			<day11 id="dms_63"/>
+			<day12 id="dms_64"/>
+			<day13 id="dms_65"/>
+			<day14 id="dms_66"/>
+			<day15 id="dms_67"/>
+			<day16 id="dms_68"/>
+			<day17 id="dms_69"/>
+			<day18 id="dms_70"/>
+			<day19 id="dms_71"/>
+			<day20 id="dms_72"/>
+			<day21 id="dms_73"/>
+			<day22 id="dms_74"/>
+			<day23 id="dms_75"/>
+			<day24 id="dms_76"/>
+			<day25 id="dms_77"/>
+			<day26 id="dms_78"/>
+			<day27 id="dms_79"/>
+			<day28 id="dms_80"/>
+			<day29 id="dms_81"/>
+			<day30 id="dms_82"/>
+			<day31 id="dms_83"/>
+			<need_write_off id="dms_84"/>
+			<need_count id="dms_85"/>
+			<need_days id="dms_86"/>
+		</record>
+	</month_schedule>
+	<month_schedule_ksz dms:title="План-график" dms:widget="table" id="dms_month_schedule_ksz" dms:headerSticky="true" x="110" y="240" width="975" height="200">
+		<columns section="1" id="dms_ksz_1" height="100">
+			<name_ksz dms:title="Наименование продукции" id="dms_ksz_2" dms:widget="dict-tree-field" dms:dict="allSpecifications" dms:showValueMode="last_value"/>
+			<sub_info_ksz dms:title="Партия" id="dms_ksz_3" dms:widget="ext-doc-field" dms:docTemplate="productBatches" dms:xpath="/batch/batch_name" dms:ext_xpaths="['/batch/products_number']"/>
+			<cn_ksz dms:title="Доп. инфо" dms:widget="string" id="dms_ksz_4"/>
+			<free_on_warehouse_ksz dms:title="На складе" id="dms_5" dms:widget="string"/>
+			<number_on_warehouse_ksz dms:title="На складе" id="dms_6" dms:widget="string"/>
+			<day_ksz1 dms:title="1" dms:widget="number" id="dms_ksz_7"/>
+			<day_ksz2 dms:title="2" dms:widget="number" id="dms_ksz_8"/>
+			<day_ksz3 dms:title="3" dms:widget="number" id="dms_ksz_9"/>
+			<day_ksz4 dms:title="4" dms:widget="number" id="dms_ksz_10"/>
+			<day_ksz5 dms:title="5" dms:widget="number" id="dms_ksz_11"/>
+			<day_ksz6 dms:title="6" dms:widget="number" id="dms_ksz_12"/>
+			<day_ksz7 dms:title="7" dms:widget="number" id="dms_ksz_13"/>
+			<day_ksz8 dms:title="8" dms:widget="number" id="dms_ksz_14"/>
+			<day_ksz9 dms:title="9" dms:widget="number" id="dms_ksz_15"/>
+			<day_ksz10 dms:title="10" dms:widget="number" id="dms_ksz_16"/>
+			<day_ksz11 dms:title="11" dms:widget="number" id="dms_ksz_17"/>
+			<day_ksz12 dms:title="12" dms:widget="number" id="dms_ksz_18"/>
+			<day_ksz13 dms:title="13" dms:widget="number" id="dms_ksz_19"/>
+			<day_ksz14 dms:title="14" dms:widget="number" id="dms_ksz_20"/>
+			<day_ksz15 dms:title="15" dms:widget="number" id="dms_ksz_21"/>
+			<day_ksz16 dms:title="16" dms:widget="number" id="dms_ksz_22"/>
+			<day_ksz17 dms:title="17" dms:widget="number" id="dms_ksz_23"/>
+			<day_ksz18 dms:title="18" dms:widget="number" id="dms_ksz_24"/>
+			<day_ksz19 dms:title="19" dms:widget="number" id="dms_ksz_25"/>
+			<day_ksz20 dms:title="20" dms:widget="number" id="dms_ksz_26"/>
+			<day_ksz21 dms:title="21" dms:widget="number" id="dms_ksz_27"/>
+			<day_ksz22 dms:title="22" dms:widget="number" id="dms_ksz_28"/>
+			<day_ksz23 dms:title="23" dms:widget="number" id="dms_ksz_29"/>
+			<day_ksz24 dms:title="24" dms:widget="number" id="dms_ksz_30"/>
+			<day_ksz25 dms:title="25" dms:widget="number" id="dms_ksz_31"/>
+			<day_ksz26 dms:title="26" dms:widget="number" id="dms_ksz_32"/>
+			<day_ksz27 dms:title="27" dms:widget="number" id="dms_ksz_33"/>
+			<day_ksz28 dms:title="28" dms:widget="number" id="dms_ksz_34"/>
+			<day_ksz29 dms:title="29" dms:widget="number" id="dms_ksz_35"/>
+			<day_ksz30 dms:title="30" dms:widget="number" id="dms_ksz_36"/>
+			<day_ksz31 dms:title="31" dms:widget="number" id="dms_ksz_37"/>
+			<need_write_off_ksz dms:title="Списание" dms:widget="number" id="dms_ksz_38"/>
+			<need_count_ksz dms:title="Нужно сделать" dms:widget="string" id="dms_ksz_39"/>
+			<need_days_ksz dms:title="Дни сдачи" dms:widget="string" id="dms_ksz_40"/>
+		</columns>
+		<record id="dms_ksz_41" height="100">
+			<name_ksz id="dms_ksz_42">Выберите наименование</name_ksz>
+			<sub_info_ksz id="dms_ksz_43"/>
+			<cn_ksz id="dms_ksz_44"/>
+			<free_on_warehouse_ksz id="dms_ksz_45"/>
+			<number_on_warehouse_ksz id="dms_ksz_46"/>
+			<day_ksz1 id="dms_ksz_47"/>
+			<day_ksz2 id="dms_ksz_48"/>
+			<day_ksz3 id="dms_ksz_49"/>
+			<day_ksz4 id="dms_ksz_50"/>
+			<day_ksz5 id="dms_ksz_51"/>
+			<day_ksz6 id="dms_ksz_52"/>
+			<day_ksz7 id="dms_ksz_53"/>
+			<day_ksz8 id="dms_ksz_54"/>
+			<day_ksz9 id="dms_ksz_55"/>
+			<day_ksz10 id="dms_ksz_56"/>
+			<day_ksz11 id="dms_ksz_57"/>
+			<day_ksz12 id="dms_ksz_58"/>
+			<day_ksz13 id="dms_ksz_59"/>
+			<day_ksz14 id="dms_ksz_60"/>
+			<day_ksz15 id="dms_ksz_61"/>
+			<day_ksz16 id="dms_ksz_62"/>
+			<day_ksz17 id="dms_ksz_63"/>
+			<day_ksz18 id="dms_ksz_64"/>
+			<day_ksz19 id="dms_ksz_65"/>
+			<day_ksz20 id="dms_ksz_66"/>
+			<day_ksz21 id="dms_ksz_67"/>
+			<day_ksz22 id="dms_ksz_68"/>
+			<day_ksz23 id="dms_ksz_69"/>
+			<day_ksz24 id="dms_ksz_70"/>
+			<day_ksz25 id="dms_ksz_71"/>
+			<day_ksz26 id="dms_ksz_72"/>
+			<day_ksz27 id="dms_ksz_73"/>
+			<day_ksz28 id="dms_ksz_74"/>
+			<day_ksz29 id="dms_ksz_75"/>
+			<day_ksz30 id="dms_ksz_76"/>
+			<day_ksz31 id="dms_ksz_77"/>
+			<need_write_off_ksz id="dms_ksz_78"/>
+			<need_count_ksz id="dms_ksz_79"/>
+			<need_days_ksz id="dms_ksz_80"/>
+		</record>
+	</month_schedule_ksz>
+	<year dms:title="План" dms:widget="string" id="dms_title_year" x="0" y="0">2023</year>
+	<month dms:title="План" dms:widget="string" id="dms_title_month" x="0" y="0">март</month>
+</plan>

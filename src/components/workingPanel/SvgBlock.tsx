@@ -10,7 +10,7 @@ import SimpleTable from "../SimpleTable";
 
 const SvgBlock = () => {
     const svgSpace: ReactFauxDom.Element = new ReactFauxDom.Element('svg');
-    const templateItems = templateInfoStore.templateItems
+    const templateItems = templateInfoStore.templateItems;
     d3.select('svg')
         .attr('width', templateInfoStore.templateAttr.width)
         .attr('height', templateInfoStore.templateAttr.height)
@@ -30,8 +30,8 @@ const SvgBlock = () => {
             newGroup.append('foreignObject')
                 .attr('x', +item.attributes['x'])
                 .attr('y', +item.attributes['y'])
-                .attr('width', item.attributes['width'])
-                .attr('height', item.attributes['height'])
+                .attr('width', item.attributes['width'] ? item.attributes['width'] + 5 : 0)
+                .attr('height', item.attributes['height'] ? item.attributes['height'] + 5 : 0)
                 .append('xhtml:div')
                     // @ts-ignore
                     .html(simpleTable);
