@@ -55,7 +55,7 @@
 			<day6 id="dms_58"/>
 			<day7 id="dms_59"/>
 			<day8 id="dms_60"/>
-			<day9 id="dms_61"/>
+			<day9 id="dms_61">200</day9>
 			<day10 id="dms_62"/>
 			<day11 id="dms_63"/>
 			<day12 id="dms_64"/>
@@ -108,7 +108,7 @@
 			<day18 id="dms_70"/>
 			<day19 id="dms_71"/>
 			<day20 id="dms_72"/>
-			<day21 id="dms_73"/>
+			<day21 id="dms_73">200</day21>
 			<day22 id="dms_74"/>
 			<day23 id="dms_75"/>
 			<day24 id="dms_76"/>
@@ -150,7 +150,7 @@
 			<day19 id="dms_71"/>
 			<day20 id="dms_72"/>
 			<day21 id="dms_73"/>
-			<day22 id="dms_74"/>
+			<day22 id="dms_74">200</day22>
 			<day23 id="dms_75"/>
 			<day24 id="dms_76"/>
 			<day25 id="dms_77"/>
@@ -249,6 +249,6 @@
 			<need_days_ksz id="dms_ksz_80"/>
 		</record>
 	</month_schedule_ksz>
-	<year dms:title="План" dms:widget="string" id="dms_title_year" x="0" y="0">2023</year>
-	<month dms:title="План" dms:widget="string" id="dms_title_month" x="0" y="0">март</month>
+	<year dms:title="Год" dms:widget="string" id="dms_title_year" x="0" y="0">2023</year>
+	<month dms:title="Месяц" dms:widget="string" id="dms_title_month" x="0" y="0">июнь</month>
 </plan>

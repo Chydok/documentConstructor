@@ -41,40 +41,38 @@ const SimpleTable = (props: {itemTableKey: number, tableView?: boolean}) => {
     });
 
     const viewRow = () => {
-            const xmlDoc = templateInfoStore.dataXml;
-            if (xmlDoc) {
-                const tableInfo = xmlDoc.getElementsByTagName(table.name)[0];
-                return Array.from(tableInfo.getElementsByTagName('record')).map((recordInfo, keyRI) => {
-                    return table.children.filter(item => item.name === 'record').map(row => {
-                        return (
-                            <TableRow
-                                key={row.attributes['id'] + keyRI}
-                                sx={{
-                                    height: +row.attributes['height'],
-                                }}
-                                >
-                                {row.children.map(cell => {
-                                    return (
-                                        <TableCell
-                                            key={cell.attributes['id'] + keyRI}
-                                            style={{
-                                                minWidth: +cell.attributes['width'] || 25,
-                                                maxWidth: +cell.attributes['width'] || 25,
-                                                lineHeight: 1,
-                                                backgroundColor: 'white',
-                                                overflow: 'hidden',
-                                                textOverflow: 'clip'
-                                            }}
-                                        >
-                                            {recordInfo.getElementsByTagName(cell.name)[0].textContent}
-                                        </TableCell>);
-                                })}
-                            </TableRow>
-                    )});
-                });
-            } else {
-                return <></>
-            }
+        const xmlDoc = templateInfoStore.dataXml;
+        if (xmlDoc) {
+            const tableInfo = xmlDoc.getElementsByTagName(table.name)[0];
+            return Array.from(tableInfo.getElementsByTagName('record')).map((recordInfo, keyRI) => {
+                return table.children.filter(item => item.name === 'record').map(row => {
+                    return (
+                        <TableRow
+                            key={row.attributes['id'] + keyRI}
+                            sx={{
+                                height: +row.attributes['height'],
+                            }}
+                            >
+                            {row.children.map(cell => {
+                                return (
+                                    <TableCell
+                                        key={cell.attributes['id'] + keyRI}
+                                        style={{
+                                            minWidth: +cell.attributes['width'] || 25,
+                                            maxWidth: +cell.attributes['width'] || 25,
+                                            lineHeight: 1,
+                                            backgroundColor: 'white',
+                                            overflow: 'hidden',
+                                            textOverflow: 'clip'
+                                        }}
+                                    >
+                                        {recordInfo.getElementsByTagName(cell.name)[0].textContent}
+                                    </TableCell>);
+                            })}
+                        </TableRow>
+                )});
+            });
+        }
     };
 
     useEffect(() => {
@@ -82,7 +80,7 @@ const SimpleTable = (props: {itemTableKey: number, tableView?: boolean}) => {
             templateInfoStore.setAttrib(table.attributes['id'], 'width', tableWidth);
             templateInfoStore.setAttrib(table.attributes['id'], 'height', tableHeight);
         }
-    }, [table.attributes, tableWidth, tableHeight]);
+    }, [table.attributes, props.tableView, tableWidth, tableHeight]);
 
     return (
         <TableContainer component={Paper}>

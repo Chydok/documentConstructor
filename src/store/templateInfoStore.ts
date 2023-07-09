@@ -1,10 +1,10 @@
 import { makeAutoObservable } from "mobx";
 import { xmlToArray } from "../util/parser";
 
-export interface ItemplateElement {
+export interface ITemplateElement {
     name: string,
     attributes: any,
-    children: Array<ItemplateElement>,
+    children: Array<ITemplateElement>,
     value: string
 }
 
@@ -14,7 +14,7 @@ export interface ItemplateAttr {
 }
 
 class templateInfoStore {
-    templateItems: Array<ItemplateElement> = [];
+    templateItems: Array<ITemplateElement> = [];
     templateAttr: ItemplateAttr = {
         width: 1240,
         height: 550,
@@ -36,7 +36,7 @@ class templateInfoStore {
     }
 
     changeCoord = (nameElem: string, x: number, y: number) => {
-        const findElem: ItemplateElement | undefined = this.templateItems.find( item => item.name === nameElem)
+        const findElem: ITemplateElement | undefined = this.templateItems.find( item => item.name === nameElem)
         findElem!.attributes['x'] = x;
         findElem!.attributes['y'] = y;
     }

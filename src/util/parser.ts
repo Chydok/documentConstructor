@@ -1,10 +1,10 @@
-import { ItemplateElement } from "../store/templateInfoStore";
+import { ITemplateElement } from "../store/templateInfoStore";
 
 export function xmlToArray (xml: HTMLElement) {
-    const tempDocArr: Array<ItemplateElement> = [];
+    const tempDocArr: Array<ITemplateElement> = [];
     xml.childNodes.forEach(xmlItem => {
         if (xmlItem.nodeType === Node.ELEMENT_NODE) {
-            const element: ItemplateElement = {name: xmlItem.nodeName, attributes:{}, children: [], value: ''}
+            const element: ITemplateElement = {name: xmlItem.nodeName, attributes:{}, children: [], value: ''}
 
             if (!xmlItem.parentElement?.parentElement) {
                 if (xml.getElementsByTagName(xmlItem.nodeName)[0].attributes.getNamedItem('x') === null) {
@@ -37,7 +37,7 @@ export function xmlToArray (xml: HTMLElement) {
     return tempDocArr;
 }
 
-export function storeToXml(xmlDoc: Element, storeItems: Array<ItemplateElement>) {
+export function storeToXml(xmlDoc: Element, storeItems: Array<ITemplateElement>) {
     for (let item of storeItems) {
         if (xmlDoc.getElementsByTagName(item.name)[0]) {
             const findXmlElem = xmlDoc.getElementsByTagName(item.name)[0];

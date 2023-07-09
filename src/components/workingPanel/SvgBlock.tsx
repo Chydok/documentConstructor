@@ -16,6 +16,24 @@ const SvgBlock = () => {
         .attr('height', templateInfoStore.templateAttr.height)
         .style('background-color', 'white');
 
+    const gridSize = 20;
+    const grid = d3.select(svgSpace)
+                    .append('g')
+                    .attr('class', 'grid');
+    for (let x = 0; x < templateInfoStore.templateAttr.width; x += gridSize) {
+        for (let y = 0; y < templateInfoStore.templateAttr.height; y += gridSize) {
+            grid.append('rect')
+                .attr('x', x)
+                .attr('y', y)
+                .attr('width', gridSize)
+                .attr('height', gridSize)
+                .attr('fill', 'none')
+                .attr('stroke', 'darkgray')
+                .attr('stroke-width', 1)
+                .attr('stroke-dasharray', 2.2);
+        }
+    }
+
     templateItems.forEach((item, itemKey) => {
         const newGroup = d3.select(svgSpace)
                 .append('g')
@@ -59,8 +77,8 @@ const SvgBlock = () => {
                 .on('drag', (event, d) => {
                     const moveX = event.sourceEvent.x - delta.x;
                     const moveY = event.sourceEvent.y - delta.y;
-                    const x = moveX > 0 ? moveX : 0;
-                    const y = moveY > 0 ? moveY : 0;
+                    const x = moveX > 0 ? Math.round(moveX / gridSize) * gridSize : 0;
+                    const y = moveY > 0 ? Math.round(moveY / gridSize) * gridSize : 0;
                     templateInfoStore.changeCoord(d.name, x, y);
                 }));
     }, [templateItems]);
