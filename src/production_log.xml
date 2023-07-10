@@ -167,6 +167,6 @@
 			<need_days_ksz id="dms_ksz_80"/>
 		</record>
 	</month_schedule_ksz>
-	<year dms:title="План" dms:widget="string" id="dms_title_year">2023</year>
-	<month dms:title="План" dms:widget="string" id="dms_title_month">март</month>
+	<year dms:title="Год" dms:widget="string" id="dms_title_year">2023</year>
+	<month dms:title="Месяц" dms:widget="string" id="dms_title_month">март</month>
 </plan>

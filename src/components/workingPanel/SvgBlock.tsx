@@ -7,6 +7,7 @@ import templateInfoStore from '../../store/templateInfoStore';
 import '../../styles/WorkingPanel.css';
 import { useEffect } from "react";
 import SimpleTable from "../SimpleTable";
+import TextInput from "../TextInput";
 
 const SvgBlock = () => {
     const svgSpace: ReactFauxDom.Element = new ReactFauxDom.Element('svg');
@@ -43,23 +44,28 @@ const SvgBlock = () => {
                 .attr('y', +item.attributes['y'])
                 .style("cursor", "pointer")
 
-        if (item.attributes['dms:widget'] === 'table') {
-            const simpleTable = <SimpleTable itemTableKey={itemKey}></SimpleTable>
+        if (['table', 'string'].indexOf(item.attributes['dms:widget']) !== -1) {
+            let addHtmlElement = <></>;
+            switch (item.attributes['dms:widget']) {
+                case 'table':
+                    addHtmlElement = <SimpleTable itemTableKey={itemKey}></SimpleTable>;
+                    break;
+                case 'string':
+                    addHtmlElement = <TextInput attributes={item.attributes} inputText={''}/>
+                    break;
+            }
             newGroup.append('foreignObject')
-                .attr('x', +item.attributes['x'])
-                .attr('y', +item.attributes['y'])
-                .attr('width', item.attributes['width'] ? item.attributes['width'] + 5 : 0)
-                .attr('height', item.attributes['height'] ? item.attributes['height'] + 5 : 0)
-                .append('xhtml:div')
-                    // @ts-ignore
-                    .html(simpleTable);
-        }
-        if (item.attributes['dms:widget'] === 'string') {
-            newGroup
-                .append('text')
-                .attr('x', +item.attributes['x'])
-                .attr('y', +item.attributes['y'] + 10)
-                .text(item.name);
+                    .attr('x', +item.attributes['x'])
+                    .attr('y', +item.attributes['y'])
+                    .attr('width', item.attributes['width'] ? item.attributes['width'] + 5 : 100)
+                    .attr('height', item.attributes['height'] ? item.attributes['height'] + 5 : 65)
+                    .append('xhtml:div')
+                        .style('display', 'flex')
+                        .style('align-items', 'end')
+                        .style('width', '100%')
+                        .style('height', '100%')
+                        // @ts-ignore
+                        .html(addHtmlElement);
         }
     });
 

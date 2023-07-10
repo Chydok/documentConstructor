@@ -1,7 +1,8 @@
 import { useEffect, useRef } from "react";
 import { observer } from "mobx-react";
-import { TextField } from "@mui/material";
+
 import SimpleTable from "../SimpleTable";
+import TextInput from "../TextInput";
 
 import templateInfoStore, { ITemplateElement } from "../../store/templateInfoStore";
 
@@ -34,7 +35,7 @@ const ViewDocument = () => {
             const stringInfo = xmlDoc ? xmlDoc.getElementsByTagName(item.name)[0].textContent : '';
 
             return (
-                <div 
+                <div
                     key={item.name}
                     id={item.name}
                     style={{
@@ -42,14 +43,7 @@ const ViewDocument = () => {
                         left: +item.attributes['x'],
                         top: +item.attributes['y'],
                     }}>
-                    <TextField 
-                        label={item.attributes['dms:title']}
-                        sx={{
-                            m: 0,
-                            width: '10ch'
-                        }}
-                        value={stringInfo}
-                    />
+                    <TextInput attributes={item.attributes} inputText={stringInfo || ''}/>
                 </div>
             );
         }
