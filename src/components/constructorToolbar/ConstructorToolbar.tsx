@@ -3,6 +3,7 @@ import { observer } from "mobx-react";
 import { Box, InputAdornment, Tab, Tabs, TextField } from "@mui/material";
 
 import '../../styles/ConstructorToolbar.css';
+import templateInfoStore, { ITemplateElement } from "../../store/templateInfoStore";
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -28,10 +29,27 @@ const TabPanel = (props: TabPanelProps) => {
 };
 
 const ConstructorToolbar = () => {
+    
     const [tabValue, setTabValue] = useState<number>(0);
 
     const tabChange = (event: React.SyntheticEvent, newTabValue: number) => {
         setTabValue(newTabValue);
+    };
+
+    const handleBoxDragEnd = (event: React.DragEvent<HTMLDivElement>) => {
+        const x = event.clientX;
+        const y = event.clientY;
+        const newTemplateElement: ITemplateElement = {
+            name: "New",
+            attributes: {
+                "x": x,
+                "y": y,
+                "dms:widget": "string"
+            },
+            children: [],   
+            value: ""
+        };
+        templateInfoStore.addElement(newTemplateElement)
     };
 
     return (
@@ -60,7 +78,23 @@ const ConstructorToolbar = () => {
                 />
             </TabPanel>
             <TabPanel value={tabValue} index={1}>
+                
                 Виджеты
+                <Box
+                    sx={{
+                        width: 60,
+                        height: 60,
+                        backgroundColor: 'primary.dark',
+                        '&:hover': {
+                        backgroundColor: 'primary.main',
+                        opacity: [0.9, 0.8, 0.7],
+                        },
+                    }}
+                    draggable
+                    onDragEnd={handleBoxDragEnd}
+                >
+                    Save
+                </Box>
             </TabPanel>
         </Box>
     );

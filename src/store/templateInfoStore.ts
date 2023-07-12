@@ -53,6 +53,10 @@ class templateInfoStore {
         }
     }
 
+    addElement = (item: ITemplateElement) => {
+        this.templateItems.push(item);
+    }
+
     removeStore = () => {
         this.templateItems = [];
         this.templateAttr = {

@@ -69,12 +69,13 @@ const SvgBlock = () => {
         }
     });
 
-    useEffect(()=>{
+   useEffect(()=>{
         const delta = {x: 0, y: 0};
         d3.selectAll('g.newGroup')
             .data(templateItems)
             .call(d3.drag<any, any>()
                 .on('start', (event, d) => {
+                    console.log(123);
                     const currentX = +d.attributes['x'];
                     const currentY = +d.attributes['y'];
                     delta.x = event.sourceEvent.x - currentX;
@@ -87,7 +88,7 @@ const SvgBlock = () => {
                     const y = moveY > 0 ? Math.round(moveY / gridSize) * gridSize : 0;
                     templateInfoStore.changeCoord(d.name, x, y);
                 }));
-    }, [templateItems]);
+   }, [templateItems]);
 
     return (
         <div className="svgDiv">
