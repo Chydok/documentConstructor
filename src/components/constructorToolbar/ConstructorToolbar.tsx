@@ -40,13 +40,69 @@ const ConstructorToolbar = () => {
         const x = event.clientX;
         const y = event.clientY;
         const newTemplateElement: ITemplateElement = {
-            name: "New",
+            name: "NewBox",
             attributes: {
                 "x": x,
                 "y": y,
                 "dms:widget": "string"
             },
             children: [],   
+            value: ""
+        };
+        templateInfoStore.addElement(newTemplateElement)
+    };
+
+    const handleTableDragEnd = (event: React.DragEvent<HTMLDivElement>) => {
+        const x = event.clientX;
+        const y = event.clientY;
+        const newTemplateElement: ITemplateElement = {
+            name: "NewTable",
+            attributes: {
+                "x": x,
+                "y": y,
+                "dms:widget": "table",
+                "width": "975",
+                "height": "200"
+            },
+            children: [
+                {
+                    name: "columns",
+                    attributes: {
+                        "height": 35
+                    },
+                    children: [
+                        {
+                            name: "cell1",
+                            attributes: {
+                                "dms:title": "Тест1",
+                                "dms:widget": "number",
+                                "width": 25
+                            },
+                            children: [],
+                            value: ""
+                        },
+                    ],
+                    value: ""
+                },
+                {
+                    name: "record",
+                    attributes: {
+                        "height": 35
+                    },
+                    children: [
+                        {
+                            name: "cell1",
+                            attributes: {
+                                "dms:widget": "number",
+                                "width": 25
+                            },
+                            children: [],
+                            value: ""
+                        },
+                    ],
+                    value: ""
+                }
+            ],   
             value: ""
         };
         templateInfoStore.addElement(newTemplateElement)
@@ -90,10 +146,28 @@ const ConstructorToolbar = () => {
                         opacity: [0.9, 0.8, 0.7],
                         },
                     }}
+                    className="widgetIcon"
                     draggable
                     onDragEnd={handleBoxDragEnd}
                 >
-                    Save
+                    Box
+                </Box>
+                
+                <Box
+                    sx={{
+                        width: 60,
+                        height: 60,
+                        backgroundColor: '#800080',
+                        '&:hover': {
+                        backgroundColor: '#8B008B',
+                        opacity: [0.9, 0.8, 0.7],
+                        },
+                    }}
+                    className="widgetIcon"
+                    draggable
+                    onDragEnd={handleTableDragEnd}
+                >
+                    Table
                 </Box>
             </TabPanel>
         </Box>

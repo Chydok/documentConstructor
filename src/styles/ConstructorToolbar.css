@@ -5,3 +5,7 @@
     border-left: 1px solid black;
     flex-wrap: nowrap;
 }
+
+.widgetIcon {
+    margin-top: 12px;
+}
