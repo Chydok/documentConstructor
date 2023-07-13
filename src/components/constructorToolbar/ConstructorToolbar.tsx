@@ -169,6 +169,23 @@ const ConstructorToolbar = () => {
                 >
                     Table
                 </Box>
+
+                <Box
+                    sx={{
+                        width: 60,
+                        height: 60,
+                        backgroundColor: '#DA70D6',
+                        '&:hover': {
+                        backgroundColor: '#DA70D6',
+                        opacity: [0.9, 0.8, 0.7],
+                        },
+                    }}
+                    className="widgetIcon"
+                    draggable
+                    onDragEnd={handleBoxDragEnd}
+                >
+                    Time
+                </Box>
             </TabPanel>
         </Box>
     );
