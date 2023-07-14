@@ -37,17 +37,33 @@ export function xmlToArray (xml: HTMLElement) {
     return tempDocArr;
 }
 
-export function storeToXml(xmlDoc: Element, storeItems: Array<ITemplateElement>) {
-    for (let item of storeItems) {
-        if (xmlDoc.getElementsByTagName(item.name)[0]) {
-            const findXmlElem = xmlDoc.getElementsByTagName(item.name)[0];
-            for (let attr in item.attributes) {
-                findXmlElem.setAttribute(attr, item.attributes[attr]);
-            }
-            if (item.children.length > 0) {
-                storeToXml(findXmlElem, item.children);
-            }
+export function createXml(templateItems: Array<ITemplateElement>): Document {
+    const xmlDoc = document.implementation.createDocument('', '', null);
+    const rootElem = xmlDoc.createElement('root');
+    xmlDoc.appendChild(rootElem);
+  
+    for (let item of templateItems) {
+      const xmlElem = xmlDoc.createElement(item.name);
+      for (let attr in item.attributes) {
+        xmlElem.setAttribute(attr, item.attributes[attr]);
+      }
+      if (item.value) {
+        xmlElem.textContent = item.value;
+      }
+      if (item.children.length > 0) {
+        for (let child of item.children) {
+          const childXmlElem = xmlDoc.createElement(child.name);
+          for (let attr in child.attributes) {
+            childXmlElem.setAttribute(attr, child.attributes[attr]);
+          }
+          if (child.value) {
+            childXmlElem.textContent = child.value;
+          }
+          xmlElem.appendChild(childXmlElem);
         }
-    };
-   return xmlDoc;
-}
+      }
+      rootElem.appendChild(xmlElem);
+    }
+  
+    return xmlDoc;
+  }
