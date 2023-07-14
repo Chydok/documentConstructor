@@ -3,6 +3,7 @@ import { observer } from "mobx-react";
 
 import SimpleTable from "../SimpleTable";
 import TextInput from "../TextInput";
+import TimeWidget from "../TimeWidget";
 
 import templateInfoStore, { ITemplateElement } from "../../store/templateInfoStore";
 
@@ -44,6 +45,22 @@ const ViewDocument = () => {
                         top: +item.attributes['y'],
                     }}>
                     <TextInput attributes={item.attributes} inputText={stringInfo || ''}/>
+                </div>
+            );
+        }
+
+        if (item.attributes['dms:widget'] === 'time') {
+
+            return (
+                <div
+                    key={item.name}
+                    id={item.name}
+                    style={{
+                        position: 'absolute',
+                        left: +item.attributes['x'],
+                        top: +item.attributes['y'],
+                    }}>
+                    <TimeWidget attributes={item.attributes} formatString="full"/>
                 </div>
             );
         }

@@ -8,6 +8,8 @@ import '../../styles/WorkingPanel.css';
 import { useEffect } from "react";
 import SimpleTable from "../SimpleTable";
 import TextInput from "../TextInput";
+import TimeWidget from "../TimeWidget";
+import { toJS } from "mobx";
 
 const SvgBlock = () => {
     const svgSpace: ReactFauxDom.Element = new ReactFauxDom.Element('svg');
@@ -44,7 +46,7 @@ const SvgBlock = () => {
                 .attr('y', +item.attributes['y'])
                 .style("cursor", "pointer")
 
-        if (['table', 'string'].indexOf(item.attributes['dms:widget']) !== -1) {
+        if (['table', 'string', 'time'].indexOf(item.attributes['dms:widget']) !== -1) {
             let addHtmlElement = <></>;
             switch (item.attributes['dms:widget']) {
                 case 'table':
@@ -52,6 +54,9 @@ const SvgBlock = () => {
                     break;
                 case 'string':
                     addHtmlElement = <TextInput attributes={item.attributes} inputText={''}/>
+                    break;
+                case 'time':
+                    addHtmlElement = <TimeWidget attributes={item.attributes} formatString="full"/>
                     break;
             }
             newGroup.append('foreignObject')
@@ -75,7 +80,6 @@ const SvgBlock = () => {
             .data(templateItems)
             .call(d3.drag<any, any>()
                 .on('start', (event, d) => {
-                    console.log(123);
                     const currentX = +d.attributes['x'];
                     const currentY = +d.attributes['y'];
                     delta.x = event.sourceEvent.x - currentX;
@@ -88,7 +92,7 @@ const SvgBlock = () => {
                     const y = moveY > 0 ? Math.round(moveY / gridSize) * gridSize : 0;
                     templateInfoStore.changeCoord(d.name, x, y);
                 }));
-   }, [templateItems]);
+   }, [toJS(templateItems)]);
 
     return (
         <div className="svgDiv">

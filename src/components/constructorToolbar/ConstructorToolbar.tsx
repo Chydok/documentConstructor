@@ -11,6 +11,8 @@ interface TabPanelProps {
     value: number;
 }
 
+var count = 0;
+
 const TabPanel = (props: TabPanelProps) => {
     const {children, value, index} = props;
     return (
@@ -28,6 +30,11 @@ const TabPanel = (props: TabPanelProps) => {
     );
 };
 
+export const timeFormat = () => {
+    var value = (document.getElementById("format") as HTMLInputElement).value;
+    return value;
+}
+
 const ConstructorToolbar = () => {
     
     const [tabValue, setTabValue] = useState<number>(0);
@@ -36,11 +43,12 @@ const ConstructorToolbar = () => {
         setTabValue(newTabValue);
     };
 
+    
     const handleBoxDragEnd = (event: React.DragEvent<HTMLDivElement>) => {
         const x = event.clientX;
         const y = event.clientY;
         const newTemplateElement: ITemplateElement = {
-            name: "NewBox",
+            name: "Box" + count,
             attributes: {
                 "x": x,
                 "y": y,
@@ -49,6 +57,7 @@ const ConstructorToolbar = () => {
             children: [],   
             value: ""
         };
+        count += 1;
         templateInfoStore.addElement(newTemplateElement)
     };
 
@@ -56,19 +65,21 @@ const ConstructorToolbar = () => {
         const x = event.clientX;
         const y = event.clientY;
         const newTemplateElement: ITemplateElement = {
-            name: "NewTable",
+            name: "Table_" + count,
             attributes: {
                 "x": x,
                 "y": y,
                 "dms:widget": "table",
                 "width": "975",
-                "height": "200"
+                "height": "200",
+                "id": "dms_table_" + count
             },
             children: [
                 {
                     name: "columns",
                     attributes: {
-                        "height": 35
+                        "height": 35,
+                        "id": "columns"
                     },
                     children: [
                         {
@@ -76,7 +87,8 @@ const ConstructorToolbar = () => {
                             attributes: {
                                 "dms:title": "Тест1",
                                 "dms:widget": "number",
-                                "width": 25
+                                "width": 25,
+                                "id": "cell1"
                             },
                             children: [],
                             value: ""
@@ -87,14 +99,16 @@ const ConstructorToolbar = () => {
                 {
                     name: "record",
                     attributes: {
-                        "height": 35
+                        "height": 35,
+                        "id": "record"
                     },
                     children: [
                         {
-                            name: "cell1",
+                            name: "cell2",
                             attributes: {
                                 "dms:widget": "number",
-                                "width": 25
+                                "width": 25,
+                                "id": "cell2"
                             },
                             children: [],
                             value: ""
@@ -105,6 +119,25 @@ const ConstructorToolbar = () => {
             ],   
             value: ""
         };
+        count += 1;
+        templateInfoStore.addElement(newTemplateElement)
+    };
+
+    const handleTimeDragEnd = (event: React.DragEvent<HTMLDivElement>) => {
+        const x = event.clientX;
+        const y = event.clientY;
+        const newTemplateElement: ITemplateElement = {
+            name: "Time_" + count,
+            attributes: {
+                "x": x,
+                "y": y,
+                "dms:widget": "time",
+                "format": "full"
+            },
+            children: [],   
+            value: ""
+        };
+        count += 1;
         templateInfoStore.addElement(newTemplateElement)
     };
 
@@ -182,10 +215,19 @@ const ConstructorToolbar = () => {
                     }}
                     className="widgetIcon"
                     draggable
-                    onDragEnd={handleBoxDragEnd}
+                    onDragEnd={handleTimeDragEnd}
                 >
                     Time
                 </Box>
+                <TextField
+                    id="format"
+                    sx={{m: 1, width: '30ch'}}
+                    InputProps={{   
+                        startAdornment: <InputAdornment position="start">Format</InputAdornment>,
+                    }}
+                    variant="standard"
+                >
+                </TextField>
             </TabPanel>
         </Box>
     );
