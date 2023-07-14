@@ -1,5 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react';
+import toJS  from 'mobx';
 
 import MainMenu from './components/MainMenu';
 import SvgBlock from './components/workingPanel/SvgBlock';
@@ -8,6 +9,7 @@ import ViewDocument from './components/viewDocument/ViewDocument';
 
 import './styles/App.css';
 import templateInfoStore from './store/templateInfoStore';
+import ConstructorTreeView from './components/TreeView/TreeView';
 
 templateInfoStore.removeStore();
 
@@ -42,7 +44,8 @@ const App = () => {
         <>
             <MainMenu />
             <div className='workDiv'>
-                {window.location.pathname === '/' && <><SvgBlock /><ToolbarEditor /></>}
+                {window.location.pathname === '/' && 
+                    <><ConstructorTreeView /><SvgBlock /><ToolbarEditor /></>}
                 {window.location.pathname === '/view' && <><ViewDocument /></>}
             </div>
         </>

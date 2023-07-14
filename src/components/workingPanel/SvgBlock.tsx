@@ -9,9 +9,12 @@ import { useEffect } from "react";
 import SimpleTable from "../SimpleTable";
 import TextInput from "../TextInput";
 
+import * as mobx from 'mobx';
+
 const SvgBlock = () => {
     const svgSpace: ReactFauxDom.Element = new ReactFauxDom.Element('svg');
     const templateItems = templateInfoStore.templateItems;
+
     d3.select('svg')
         .attr('width', templateInfoStore.templateAttr.width)
         .attr('height', templateInfoStore.templateAttr.height)
@@ -87,7 +90,7 @@ const SvgBlock = () => {
                     const y = moveY > 0 ? Math.round(moveY / gridSize) * gridSize : 0;
                     templateInfoStore.changeCoord(d.name, x, y);
                 }));
-    }, [templateItems]);
+    }, [mobx.toJS(templateItems)]);
 
     return (
         <div className="svgDiv">
