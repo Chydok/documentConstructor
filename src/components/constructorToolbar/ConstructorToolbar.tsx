@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { observer } from "mobx-react";
-import { Box, InputAdornment, Tab, Tabs, TextField } from "@mui/material";
+import { Box, Tab, Tabs } from "@mui/material";
 
 import '../../styles/ConstructorToolbar.css';
+import ChangeObjec from "./bars/ChangeObject";
+import templateInfoStore from "../../store/templateInfoStore";
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -27,7 +29,7 @@ const TabPanel = (props: TabPanelProps) => {
     );
 };
 
-const ConstructorToolbar = () => {
+const ConstructorToolbar: React.FC<{}> = ({}) => {
     const [tabValue, setTabValue] = useState<number>(0);
 
     const tabChange = (event: React.SyntheticEvent, newTabValue: number) => {
@@ -37,27 +39,11 @@ const ConstructorToolbar = () => {
     return (
         <Box className="toobarDiv">
             <Tabs value={tabValue} onChange={tabChange}>
-                <Tab label="Обьект"/>
+                <Tab label="Объект"/>
                 <Tab label="Виджеты"/>
             </Tabs>
             <TabPanel value={tabValue} index={0}>
-                <Box>Координаты:</Box>
-                <TextField 
-                    id="coordX"
-                    sx={{m: 1, width: '10ch'}}
-                    variant="standard"
-                    InputProps={{
-                        startAdornment: <InputAdornment position="start">X:</InputAdornment>,
-                    }}
-                />
-                <TextField
-                    id="coordY"
-                    sx={{m: 1, width: '10ch'}}
-                    InputProps={{
-                        startAdornment: <InputAdornment position="start">Y:</InputAdornment>,
-                    }}
-                    variant="standard"
-                />
+                <ChangeObjec selectedItems={templateInfoStore.selectedItems} />
             </TabPanel>
             <TabPanel value={tabValue} index={1}>
                 Виджеты

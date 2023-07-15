@@ -20,6 +20,7 @@ class templateInfoStore {
         height: 550,
     };
     dataXml?: Document;
+    selectedItems: string = '';
 
     constructor() {
         makeAutoObservable(this);
@@ -41,15 +42,35 @@ class templateInfoStore {
         findElem!.attributes['y'] = y;
     }
 
-    setAttrib = (elemId: string, attribName: string, value: string | number) => {
-        const findItem = this.templateItems.find(item => {
-            if (item.attributes['id'] === elemId) {
-                return item;
-            }
-            return item.children.find((childrenItem => childrenItem.attributes['id'] === elemId));
-        });
-        if (typeof findItem !== 'undefined') {
-            findItem.attributes[attribName] = value;
+    searchByName(targetId: string): ITemplateElement {
+        const result: ITemplateElement[] = [];
+    
+        const findNode = (node: ITemplateElement) => {
+          if (node.attributes['id'] === targetId) {
+            result.push(node);
+          }
+    
+          for (const child of node.children) {
+            findNode(child);
+          }
+        };
+    
+        for (const node of this.templateItems) {
+          findNode(node);
+        }
+    
+        return result[0];
+    }
+
+    setSelectedItem = (newSelectItem: string) => {
+        this.setAttrib(this.selectedItems, 'selected', false);
+        this.selectedItems = newSelectItem;
+    }
+
+    setAttrib = (elemId: string, attribName: string, value: string | number | boolean) => {
+        const findElem = this.searchByName(elemId);
+        if (typeof findElem !== 'undefined') {
+            findElem.attributes[attribName] = value;
         }
     }
 

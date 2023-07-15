@@ -8,3 +8,14 @@
     background-color: darkgray;
     overflow: auto;
 }
+
+.cellDiv {
+    width: auto; 
+    height: auto;
+    display: table-cell;
+    overflow: hidden;
+}
+
+table {
+    height: 100%;
+}
