@@ -29,7 +29,7 @@ const TabPanel = (props: TabPanelProps) => {
     );
 };
 
-const ConstructorToolbar: React.FC<{}> = ({}) => {
+const ConstructorToolbar: React.FC = () => {
     const [tabValue, setTabValue] = useState<number>(0);
 
     const tabChange = (event: React.SyntheticEvent, newTabValue: number) => {

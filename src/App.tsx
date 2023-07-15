@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react';
 
 import MainMenu from './components/MainMenu';
@@ -38,7 +38,7 @@ if (window.location.pathname === '/view') {
     });
 }
 
-const App = () => {
+const App: React.FC = () => {
     return (
         <>
             <MainMenu />

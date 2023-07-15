@@ -7,7 +7,7 @@ import templateInfoStore, { ITemplateElement } from '../../store/templateInfoSto
 
 import '../../styles/TreeView.css';
 
-const ConstructorTreeView: React.FC<{}> = ({}) => {
+const ConstructorTreeView: React.FC = () => {
     const templateItems = templateInfoStore.templateItems;
 
     const handleClick = (currentTamplateItem: ITemplateElement) => {

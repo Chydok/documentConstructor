@@ -11,9 +11,9 @@ import templateInfoStore from '../../store/templateInfoStore';
 
 import '../../styles/WorkingPanel.css';
 
-const SvgBlock: React.FC<{}> = ({}) => {
+const SvgBlock: React.FC = () => {
     const svgSpace: ReactFauxDom.Element = new ReactFauxDom.Element('svg');
-    const templateItems = templateInfoStore.templateItems;
+    const templateItems = toJS(templateInfoStore.templateItems);
     d3.select('svg')
         .attr('width', templateInfoStore.templateAttr.width)
         .attr('height', templateInfoStore.templateAttr.height)
@@ -108,7 +108,7 @@ const SvgBlock: React.FC<{}> = ({}) => {
                     const y = moveY > 0 ? Math.round(moveY / gridSize) * gridSize : 0;
                     templateInfoStore.changeCoord(d.name, x, y);
                 }));
-    }, [toJS(templateItems)]);
+    }, [templateItems]);
 
     return (
         <div className="svgDiv">
