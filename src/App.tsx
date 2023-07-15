@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { observer } from 'mobx-react';
-import toJS  from 'mobx';
 
 import MainMenu from './components/MainMenu';
 import SvgBlock from './components/workingPanel/SvgBlock';
-import ToolbarEditor from './components/constructorToolbar/ConstructorToolbar';
+import ConstructorToolbar from './components/constructorToolbar/ConstructorToolbar';
 import ViewDocument from './components/viewDocument/ViewDocument';
 
 import './styles/App.css';
@@ -45,7 +44,11 @@ const App = () => {
             <MainMenu />
             <div className='workDiv'>
                 {window.location.pathname === '/' && 
-                    <><ConstructorTreeView /><SvgBlock /><ToolbarEditor /></>}
+                    <>
+                        <ConstructorTreeView />
+                        <SvgBlock />
+                        <ConstructorToolbar />
+                    </>}
                 {window.location.pathname === '/view' && <><ViewDocument /></>}
             </div>
         </>

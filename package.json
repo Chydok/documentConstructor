@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@emotion/styled": "^11.11.0",
+    "@mui/lab": "^5.0.0-alpha.136",
     "@mui/material": "^5.13.7",
     "@types/d3": "^7.4.0",
     "@types/jest": "^27.5.2",
