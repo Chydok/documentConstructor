@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import '../styles/MainMenu.css';
 import templateInfoStore from '../store/templateInfoStore';
 import { get } from 'mobx';
-import { createXml, storeToXml } from '../util/parser';
+import { storeToXml } from '../util/parser';
 
 const MainMenu = () => {
     return (
