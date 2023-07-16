@@ -13,6 +13,16 @@ export interface ItemplateAttr {
     height: number,
 }
 
+export interface ICoordTemp {
+    id: string,
+    name: string,
+    x: number,
+    y: number,
+    widget: string,
+    height: number,
+    width: number,
+}
+
 class templateInfoStore {
     templateItems: Array<ITemplateElement> = [];
     templateAttr: ItemplateAttr = {
@@ -21,9 +31,22 @@ class templateInfoStore {
     };
     dataXml?: Document;
     selectedItems: string = '';
+    lastId: number = 1;
+    coordTemp: Array<ICoordTemp> = [];
 
     constructor() {
         makeAutoObservable(this);
+    }
+
+    generateIds(items: ITemplateElement[], counter: number): number {
+        items.forEach((item) => {
+          item.attributes['id'] = `dms_${counter}`;
+          counter++;
+          if (item.children.length > 0) {
+            counter = this.generateIds(item.children, counter);
+          }
+        });
+        return counter;
     }
 
     setTemplateInfo = (xml: HTMLElement) => {
@@ -34,10 +57,26 @@ class templateInfoStore {
             this.templateAttr.height = +xml.attributes.getNamedItem('height')?.nodeValue!;
         }
         this.templateItems = xmlToArray(xml);
+        this.lastId = this.generateIds(this.templateItems, this.lastId);
+
+        if (window.location.pathname === '/view') {
+            for (let item of this.templateItems) {
+                const findObj = item;
+                this.coordTemp.push({
+                    id: findObj?.attributes['id'],
+                    name: findObj?.name,
+                    x: +findObj?.attributes['x'],
+                    y: +findObj?.attributes['y'],
+                    widget: findObj?.attributes['dms:widget'],
+                    height: +findObj?.attributes['height'],
+                    width: +findObj?.attributes['width'],
+                });
+            }
+        }
     }
 
     changeCoord = (nameElem: string, x: number, y: number) => {
-        const findElem: ITemplateElement | undefined = this.templateItems.find( item => item.name === nameElem)
+        const findElem: ITemplateElement | undefined = this.templateItems.find( item => item.attributes['id'] === nameElem)
         findElem!.attributes['x'] = x;
         findElem!.attributes['y'] = y;
     }
@@ -72,6 +111,11 @@ class templateInfoStore {
         if (typeof findElem !== 'undefined') {
             findElem.attributes[attribName] = value;
         }
+    }
+
+    addElement = (item: ITemplateElement) => {
+        this.lastId = this.generateIds([item], this.lastId);
+        this.templateItems.push(item);
     }
 
     removeStore = () => {

@@ -1,8 +1,7 @@
 import React from "react";
 import { observer } from "mobx-react";
+import { TreeView, TreeItem } from '@mui/lab';
 
-import TreeView from '@mui/lab/TreeView';
-import TreeItem from '@mui/lab/TreeItem';
 import templateInfoStore, { ITemplateElement } from '../../store/templateInfoStore';
 
 import '../../styles/TreeView.css';
@@ -30,7 +29,7 @@ const ConstructorTreeView: React.FC = () => {
                 key={`${keyMain}_${mainNode.attributes['id']}`}
                 id={mainNode.attributes['id']}
                 nodeId={mainNode.attributes['id']}
-                label={mainNode.attributes['dms:title']}
+                label={mainNode.name}
                 onClick={() => handleClick(mainNode)}
             >
                 {mainNode.children.map((subMain, keySub) => (

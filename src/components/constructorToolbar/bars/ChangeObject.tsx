@@ -1,7 +1,11 @@
 import React from "react";
 import { observer } from "mobx-react";
+import {
+    Box,
+    InputAdornment,
+    TextField
+} from "@mui/material";
 
-import { Box, InputAdornment, TextField } from "@mui/material";
 import templateInfoStore, { ITemplateElement } from "../../../store/templateInfoStore";
 
 const ChangeObject: React.FC<{selectedItems: string}> = ({selectedItems}) => {
@@ -12,14 +16,24 @@ const ChangeObject: React.FC<{selectedItems: string}> = ({selectedItems}) => {
     return (
         <>
             {findTempalteItem &&
-                <>
-                    <Box paddingBottom={1}>Имя тэга: {findTempalteItem.name}</Box>
-                    <Box paddingBottom={1}>ID: {findTempalteItem.attributes['id']}</Box>
-                </>
+                <Box>
+                    <Box paddingLeft={1}>ID: {findTempalteItem.attributes['id']}</Box>
+                    <TextField
+                        id="name"
+                        sx={{m: 1}}
+                        variant="standard"
+                        InputProps={{
+                            startAdornment: <InputAdornment position="start">name:</InputAdornment>,
+                        }}
+                        value={findTempalteItem.name}
+                        onChange={(el) => {
+                            templateInfoStore.setAttrib(findTempalteItem!.attributes['id'], 'name', el.target.value)
+                        }}
+                    />
+                </Box>
             } 
             {(typeof findTempalteItem?.attributes['x'] !== 'undefined') &&
-            <>
-                <Box>Координаты:</Box>
+            <Box>
                 <TextField
                     id="coordX"
                     sx={{m: 1, width: '10ch'}}
@@ -46,39 +60,66 @@ const ChangeObject: React.FC<{selectedItems: string}> = ({selectedItems}) => {
                         templateInfoStore.setAttrib(findTempalteItem!.attributes['id'], 'y', numberCoord)
                     }}
                 />
-            </>}
+            </Box>}
             {(typeof findTempalteItem?.attributes['height'] !== 'undefined' && findTempalteItem?.attributes['dms:widget'] !== 'table') &&
-            <>
-            <TextField
-                id="coordX"
-                sx={{m: 1, width: '10ch'}}
-                variant="standard"
-                InputProps={{
-                    startAdornment: <InputAdornment position="start">Высота:</InputAdornment>,
-                }}
-                value={findTempalteItem.attributes['height']}
-                onChange={(el) => {
-                    const numberCoord = el.target.value || 0;
-                    templateInfoStore.setAttrib(findTempalteItem!.attributes['id'], 'height', numberCoord)
-                }}
-            />
-            </>}
+            <Box>
+                <TextField
+                    id="height"
+                    sx={{m: 1, width: '10ch'}}
+                    variant="standard"
+                    InputProps={{
+                        startAdornment: <InputAdornment position="start">Высота:</InputAdornment>,
+                    }}
+                    value={findTempalteItem.attributes['height']}
+                    onChange={(el) => {
+                        const numberCoord = el.target.value || 0;
+                        templateInfoStore.setAttrib(findTempalteItem!.attributes['id'], 'height', numberCoord)
+                    }}
+                />
+            </Box>}
             {(typeof findTempalteItem?.attributes['width'] !== 'undefined' && findTempalteItem?.attributes['dms:widget'] !== 'table') &&
-            <>
-            <TextField
-                id="coordX"
-                sx={{m: 1, width: '10ch'}}
-                variant="standard"
-                InputProps={{
-                    startAdornment: <InputAdornment position="start">Ширина:</InputAdornment>,
-                }}
-                value={findTempalteItem.attributes['width']}
-                onChange={(el) => {
-                    const numberCoord = el.target.value || 0;
-                    templateInfoStore.setAttrib(findTempalteItem!.attributes['id'], 'width', numberCoord)
-                }}
-            />
-            </>}
+            <Box>
+                <TextField
+                    id="width"
+                    sx={{m: 1, width: '10ch'}}
+                    variant="standard"
+                    InputProps={{
+                        startAdornment: <InputAdornment position="start">Ширина:</InputAdornment>,
+                    }}
+                    value={findTempalteItem.attributes['width']}
+                    onChange={(el) => {
+                        const numberCoord = el.target.value || 0;
+                        templateInfoStore.setAttrib(findTempalteItem!.attributes['id'], 'width', numberCoord)
+                    }}
+                />
+            </Box>}
+            {(typeof findTempalteItem?.attributes['format'] !== 'undefined') &&
+            <Box>
+                <TextField
+                    id="format"
+                    sx={{m: 1, width: '20ch'}}
+                    variant="standard"
+                    InputProps={{
+                        startAdornment: <InputAdornment position="start">Формат:</InputAdornment>,
+                    }}
+                    value={findTempalteItem.attributes['format']}
+                    onChange={(el) => {
+                        templateInfoStore.setAttrib(findTempalteItem!.attributes['id'], 'format', el.target.value)
+                    }}
+                />
+                <TextField
+                    id="value"
+                    sx={{m: 1, width: '20ch'}}
+                    variant="standard"
+                    InputProps={{
+                        startAdornment: <InputAdornment position="start">Значение:</InputAdornment>,
+                    }}
+                    value={findTempalteItem.value}
+                    onChange={(el) => {
+                        templateInfoStore.setAttrib(findTempalteItem!.attributes['id'], 'value', el.target.value)
+                    }}
+                />
+            </Box>}
         </>
     )
 }

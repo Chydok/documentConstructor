@@ -6,6 +6,7 @@ import * as d3 from "d3";
 
 import SimpleTable from "../SimpleTable";
 import TextInput from "../TextInput";
+import TimeWidget from "../TimeWidget";
 
 import templateInfoStore from '../../store/templateInfoStore';
 
@@ -40,7 +41,7 @@ const SvgBlock: React.FC = () => {
         }
     }
 
-    templateItems.forEach((item, itemKey) => {
+    templateItems.forEach((item) => {
         const newGroup = d3.select(svgSpace)
                 .append('g')
                 .attr('class', 'newGroup')
@@ -49,24 +50,25 @@ const SvgBlock: React.FC = () => {
                 .attr('y', +item.attributes['y'])
                 .style("cursor", "pointer");
 
-        if (['table', 'string'].indexOf(item.attributes['dms:widget']) !== -1) {
+        if (['table', 'string', 'time'].indexOf(item.attributes['dms:widget']) !== -1) {
             let addHtmlElement = <></>;
             switch (item.attributes['dms:widget']) {
                 case 'table':
-                    addHtmlElement = <SimpleTable itemTableKey={itemKey}></SimpleTable>;
+                    addHtmlElement = <SimpleTable itemTableID={item.attributes['id']}></SimpleTable>;
                     break;
                 case 'string':
-                    addHtmlElement = <TextInput attributes={item.attributes} inputText={''}/>
+                    addHtmlElement = <TextInput name={item.name} inputText={''}/>
+                    break;
+                case 'time':
+                    addHtmlElement = <TimeWidget attributes={item.attributes} value={item.value}/>
                     break;
             }
             newGroup.append('foreignObject')
                     .attr('x', +item.attributes['x'])
                     .attr('y', +item.attributes['y'])
-                    .attr('width', item.attributes['width'] ? item.attributes['width'] + 5 : 100)
-                    .attr('height', item.attributes['height'] ? item.attributes['height'] + 5 : 65)
+                    .attr('width', item.attributes['width'] ? item.attributes['width'] : 100)
+                    .attr('height', item.attributes['height'] ? item.attributes['height'] : 65)
                     .append('xhtml:div')
-                        .style('display', 'flex')
-                        .style('align-items', 'end')
                         .style('width', '100%')
                         .style('height', '100%')
                         // @ts-ignore
@@ -75,8 +77,8 @@ const SvgBlock: React.FC = () => {
             newGroup.append('rect')
                     .attr('x', +item.attributes['x'])
                     .attr('y', +item.attributes['y'])
-                    .attr('width', item.attributes['width'] ? item.attributes['width'] + 5 : 100)
-                    .attr('height', item.attributes['height'] ? item.attributes['height'] + 5 : 65)
+                    .attr('width', item.attributes['width'] ? item.attributes['width'] : 100)
+                    .attr('height', item.attributes['height'] ? item.attributes['height'] : 65)
                     .attr('fill', 'transparent')
                     .attr('stroke', `${item.attributes['selected'] === true ? '#408BD5' : ''}`)
                     .attr('stroke-width', 2)
@@ -106,7 +108,7 @@ const SvgBlock: React.FC = () => {
                     const moveY = event.sourceEvent.y - delta.y;
                     const x = moveX > 0 ? Math.round(moveX / gridSize) * gridSize : 0;
                     const y = moveY > 0 ? Math.round(moveY / gridSize) * gridSize : 0;
-                    templateInfoStore.changeCoord(d.name, x, y);
+                    templateInfoStore.changeCoord(d.attributes['id'], x, y);
                 }));
     }, [templateItems]);
 

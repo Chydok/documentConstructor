@@ -20,7 +20,7 @@ if (window.location.pathname === '/') {
 
         templateInfoStore.setTemplateInfo(xmlDoc.documentElement);
     });
-} 
+}
 if (window.location.pathname === '/view') {
     const testXml = require('./data.xml');
     fetch(testXml).then(response => response.text()).then(text => {
@@ -36,6 +36,7 @@ if (window.location.pathname === '/view') {
 
         templateInfoStore.dataXml = xmlDoc;
     });
+
 }
 
 const App: React.FC = () => {
