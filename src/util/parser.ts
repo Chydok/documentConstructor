@@ -17,7 +17,7 @@ export function xmlToArray (xml: HTMLElement) {
 
             if (xmlItem.nodeName === 'record' || xmlItem.nodeName === 'columns') {
                 if (xml.getElementsByTagName(xmlItem.nodeName)[0].attributes.getNamedItem('height') === null) {
-                    element.attributes['height'] = 20;
+                    element.attributes['height'] = 35;
                 }
             }
 

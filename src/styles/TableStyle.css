@@ -1,0 +1,41 @@
+.templateAttr {
+    background-color: "white";
+    display: "table-cell";
+    overflow: "hidden";
+}
+.cellNotSelected {
+    background-color: "transparent";
+}
+.cellAttrMouseOn {
+    background-color: "lightgray";
+}
+.cellAttrSelected {
+    background-color: "lightblue";
+}
+.branchAttr {
+    background-color: "white";
+    width: "100%";
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    padding-left: "4px";
+}
+.branchAttr2 {
+    background-color: "lightgray";
+    width: "100%";
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    padding-left: "4px";
+}
+.branchAttr3 {
+    background-color: "lightblue";
+    width: "100%";
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    padding-left: "4px";
+}
+.treeAttr {
+    background-color: "white",
+}

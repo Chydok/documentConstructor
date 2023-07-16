@@ -1,23 +1,27 @@
-import * as d3 from "d3";
+import React, { useEffect } from "react";
+import { toJS } from "mobx";
 import { observer } from "mobx-react";
 import ReactFauxDom from 'react-faux-dom';
+import * as d3 from "d3";
+
+import SimpleTable from "../SimpleTable";
+import TextInput from "../TextInput";
+import TimeWidget from "../TimeWidget";
 
 import templateInfoStore from '../../store/templateInfoStore';
 
 import '../../styles/WorkingPanel.css';
-import { useEffect } from "react";
-import SimpleTable from "../SimpleTable";
-import TextInput from "../TextInput";
-import TimeWidget from "../TimeWidget";
-import { toJS } from "mobx";
 
-const SvgBlock = () => {
+const SvgBlock: React.FC = () => {
     const svgSpace: ReactFauxDom.Element = new ReactFauxDom.Element('svg');
-    const templateItems = templateInfoStore.templateItems;
+    const templateItems = toJS(templateInfoStore.templateItems);
     d3.select('svg')
         .attr('width', templateInfoStore.templateAttr.width)
         .attr('height', templateInfoStore.templateAttr.height)
-        .style('background-color', 'white');
+        .style('background-color', 'white')
+        .on('click', () => {
+            templateInfoStore.setSelectedItem('');
+        });
 
     const gridSize = 20;
     const grid = d3.select(svgSpace)
@@ -44,7 +48,7 @@ const SvgBlock = () => {
                 .attr('id', `#${item.name}`)
                 .attr('x', +item.attributes['x'])
                 .attr('y', +item.attributes['y'])
-                .style("cursor", "pointer")
+                .style("cursor", "pointer");
 
         if (['table', 'string', 'time'].indexOf(item.attributes['dms:widget']) !== -1) {
             let addHtmlElement = <></>;
@@ -71,6 +75,20 @@ const SvgBlock = () => {
                         .style('height', '100%')
                         // @ts-ignore
                         .html(addHtmlElement);
+
+            newGroup.append('rect')
+                    .attr('x', +item.attributes['x'])
+                    .attr('y', +item.attributes['y'])
+                    .attr('width', item.attributes['width'] ? item.attributes['width'] + 5 : 100)
+                    .attr('height', item.attributes['height'] ? item.attributes['height'] + 5 : 65)
+                    .attr('fill', 'transparent')
+                    .attr('stroke', `${item.attributes['selected'] === true ? '#408BD5' : ''}`)
+                    .attr('stroke-width', 2)
+                    .on('click', () => {
+                        templateInfoStore.setSelectedItem(item.attributes['id']);
+                        templateInfoStore.setAttrib(item.attributes['id'], 'selected', true);
+                    })
+                    .attr('stroke-dasharray', 5.5);
         }
     });
 
@@ -84,6 +102,8 @@ const SvgBlock = () => {
                     const currentY = +d.attributes['y'];
                     delta.x = event.sourceEvent.x - currentX;
                     delta.y = event.sourceEvent.y - currentY;
+                    templateInfoStore.setSelectedItem(d.attributes['id']);
+                    templateInfoStore.setAttrib(d.attributes['id'], 'selected', true);
                 })
                 .on('drag', (event, d) => {
                     const moveX = event.sourceEvent.x - delta.x;

@@ -2,9 +2,11 @@ import React, { useEffect } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { observer } from 'mobx-react';
 import templateInfoStore from '../store/templateInfoStore';
+import { toJS } from 'mobx';
 
-const SimpleTable = (props: {itemTableKey: number, tableView?: boolean}) => {
+const SimpleTable: React.FC<{itemTableKey: number, tableView?: boolean}> = (props) => {
     const table = templateInfoStore.templateItems[props.itemTableKey];
+    const tableAttributes = toJS(table.attributes);
     let tableWidth = 0;
     let tableHeight = 0;
 
@@ -77,10 +79,10 @@ const SimpleTable = (props: {itemTableKey: number, tableView?: boolean}) => {
 
     useEffect(() => {
         if (!props.tableView) {
-            templateInfoStore.setAttrib(table.attributes['id'], 'width', tableWidth);
-            templateInfoStore.setAttrib(table.attributes['id'], 'height', tableHeight);
+            templateInfoStore.setAttrib(tableAttributes['id'], 'width', tableWidth);
+            templateInfoStore.setAttrib(tableAttributes['id'], 'height', tableHeight);
         }
-    }, [table.attributes, props.tableView, tableWidth, tableHeight]);
+    }, [tableAttributes, props.tableView, tableWidth, tableHeight]);
 
     return (
         <TableContainer component={Paper}>

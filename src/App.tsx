@@ -3,11 +3,12 @@ import { observer } from 'mobx-react';
 
 import MainMenu from './components/MainMenu';
 import SvgBlock from './components/workingPanel/SvgBlock';
-import ToolbarEditor from './components/constructorToolbar/ConstructorToolbar';
+import ConstructorToolbar from './components/constructorToolbar/ConstructorToolbar';
 import ViewDocument from './components/viewDocument/ViewDocument';
 
 import './styles/App.css';
 import templateInfoStore from './store/templateInfoStore';
+import ConstructorTreeView from './components/TreeView/TreeView';
 
 templateInfoStore.removeStore();
 
@@ -37,12 +38,17 @@ if (window.location.pathname === '/view') {
     });
 }
 
-const App = () => {
+const App: React.FC = () => {
     return (
         <>
             <MainMenu />
             <div className='workDiv'>
-                {window.location.pathname === '/' && <><SvgBlock /><ToolbarEditor /></>}
+                {window.location.pathname === '/' && 
+                    <>
+                        <ConstructorTreeView />
+                        <SvgBlock />
+                        <ConstructorToolbar />
+                    </>}
                 {window.location.pathname === '/view' && <><ViewDocument /></>}
             </div>
         </>
