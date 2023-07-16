@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import '../styles/MainMenu.css';
 import templateInfoStore from '../store/templateInfoStore';
 import { get } from 'mobx';
-import { createXml } from '../util/parser';
+import { createXml, storeToXml } from '../util/parser';
 
 const MainMenu = () => {
     return (
@@ -20,7 +20,7 @@ const MainMenu = () => {
                         for (let attr in templateInfoStore.templateAttr) {
                             xmlDoc.documentElement.setAttribute(attr, get(templateInfoStore.templateAttr, attr)) 
                         }
-                        const newXmlDoc = createXml(templateInfoStore.templateItems);
+                        const newXmlDoc = storeToXml(xmlDoc.documentElement, templateInfoStore.templateItems);
                         const serializer = new XMLSerializer();
                         const xmlString = serializer.serializeToString(newXmlDoc);
                         const xhr = new XMLHttpRequest();

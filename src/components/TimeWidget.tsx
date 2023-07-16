@@ -1,19 +1,28 @@
 import { observer } from "mobx-react"
 import { Box } from "@mui/material";
-import {timeFormat} from "./constructorToolbar/ConstructorToolbar"
 
 interface ITimeWidget {
     attributes: any
-    formatString: string
+    value: string
 }
 
 const TimeWidget = (props: ITimeWidget) => {
-    const formatString = timeFormat();
-    if (formatString === "date") {
-        var now = new Date().toLocaleString().slice(0, -10);
-    } else {
-        var now = new Date().toLocaleString();
-    }
+    const formatString = props.attributes['format'];
+    const time = formatString === "date" 
+        ? new Date(+props.value * 1000).toLocaleDateString('ru-RU', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+        }) 
+        : new Date(+props.value * 1000).toLocaleDateString('ru-RU', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        }) ;
+
     return (
         <Box
             sx={{
@@ -27,7 +36,7 @@ const TimeWidget = (props: ITimeWidget) => {
             }}
             
         >
-            {now}
+            {time}
         </Box>
     )
 }

@@ -8,15 +8,17 @@ import TimeWidget from "../TimeWidget";
 import templateInfoStore, { ITemplateElement } from "../../store/templateInfoStore";
 
 import '../../styles/ViewDocument.css';
+import { toJS } from "mobx";
 
 const ViewDocument = () => {
     const divRef = useRef<HTMLDivElement>(null);
     const pageWidth = templateInfoStore.templateAttr.width;
     //const pageHeight = templateInfoStore.templateAttr.height;
 
-    const templateItems = templateInfoStore.templateItems;
+    const templateItems = toJS(templateInfoStore.templateItems);
 
-    const renderItem = (item: ITemplateElement, itemKey: number) => {
+    const renderItem = (item: ITemplateElement) => {
+        const xmlDoc = templateInfoStore.dataXml;
         if (item.attributes['dms:widget'] === 'table') {
             return (
                 <div 
@@ -27,14 +29,12 @@ const ViewDocument = () => {
                         left: +item.attributes['x'],
                         top: +item.attributes['y'],
                     }}>
-                    <SimpleTable itemTableKey={itemKey} tableView={true}></SimpleTable>
+                    <SimpleTable itemTableID={item.attributes['id']} tableView={true}></SimpleTable>
                 </div>
             );
         }
         if (item.attributes['dms:widget'] === 'string') {
-            const xmlDoc = templateInfoStore.dataXml;
-            const stringInfo = xmlDoc ? xmlDoc.getElementsByTagName(item.name)[0].textContent : '';
-
+            const stringInfo = xmlDoc && xmlDoc.getElementsByTagName(item.name)[0] ? xmlDoc.getElementsByTagName(item.name)[0].textContent : '';
             return (
                 <div
                     key={item.name}
@@ -44,13 +44,13 @@ const ViewDocument = () => {
                         left: +item.attributes['x'],
                         top: +item.attributes['y'],
                     }}>
-                    <TextInput attributes={item.attributes} inputText={stringInfo || ''}/>
+                    <TextInput name={item.name} inputText={stringInfo || ''}/>
                 </div>
             );
         }
 
         if (item.attributes['dms:widget'] === 'time') {
-
+            const stringInfo = xmlDoc && xmlDoc.getElementsByTagName(item.name)[0] ? xmlDoc.getElementsByTagName(item.name)[0].textContent : '';
             return (
                 <div
                     key={item.name}
@@ -60,7 +60,7 @@ const ViewDocument = () => {
                         left: +item.attributes['x'],
                         top: +item.attributes['y'],
                     }}>
-                    <TimeWidget attributes={item.attributes} formatString="full"/>
+                    <TimeWidget attributes={item.attributes} value={stringInfo && stringInfo !== '' ? stringInfo : item.value}/>
                 </div>
             );
         }
@@ -69,7 +69,7 @@ const ViewDocument = () => {
     useEffect(() => {
         if (divRef.current) {
             const objects = divRef.current.children;
-
+            const coordTemp = templateInfoStore.coordTemp;
             for (let i = 0; i < objects.length; i++) {
                 const obj1 = objects[i] as HTMLElement;
                 const rect1 = obj1.getBoundingClientRect();
@@ -82,14 +82,16 @@ const ViewDocument = () => {
                         rect1.top < rect2.bottom && rect1.bottom > rect2.top) {
                         if (rect1.top < rect2.top) {
                             if (rect1.bottom > rect2.top) {
-                                const findObj = templateItems.find(item => item.name === obj1.id);
-                                const obj1Height = findObj?.attributes['dms:widget'] === 'table' ? +rect1.bottom - +findObj?.attributes['height'] : 0;
-                                const objItemMove = templateItems.find(item => item.name === obj2.id);
-                                if (objItemMove) {
+                                const findObj = coordTemp.find(item => item.name === obj1.id);
+                                const findObj2 = coordTemp.find(item => item.name === obj2.id);
+                                const objDiff = findObj?.widget === 'table' ?
+                                    +findObj2!.y - ((+findObj?.y) + findObj?.height)
+                                    : 0;
+                                if (findObj2) {
                                     templateInfoStore.setAttrib(
-                                        objItemMove.attributes['id'],
+                                        findObj2.id,
                                         'y',
-                                        (+objItemMove.attributes['y'] + obj1Height)
+                                        (+rect1.bottom + objDiff)
                                     );
                                 }
                             }
@@ -97,15 +99,16 @@ const ViewDocument = () => {
 
                         if (rect2.top < rect1.top) {
                             if (rect2.bottom > rect1.top) {
-                                const findObj = templateItems.find(item => item.name === obj2.id);
-                                const obj1Height = findObj?.attributes['dms:widget'] === 'table' ? +rect2.bottom - +findObj?.attributes['height'] : 0;
-                                const objItemMove = templateItems.find(item => item.name === obj1.id);
-                                if (objItemMove) {
-                                    console.log(+objItemMove.attributes['y'], (obj1Height));
+                                const findObj = coordTemp.find(item => item.name === obj2.id);
+                                const findObj2 = coordTemp.find(item => item.name === obj1.id);
+                                const objDiff = findObj?.widget === 'table' ?
+                                    +findObj2!.y - ((+findObj?.y) + findObj?.height)
+                                    : 0;
+                                if (findObj2) {
                                     templateInfoStore.setAttrib(
-                                        objItemMove.attributes['id'],
+                                        findObj2.id,
                                         'y',
-                                        (+objItemMove.attributes['y'] + obj1Height)
+                                        (+rect2.bottom + objDiff)
                                     );
                                 }
                             }
@@ -123,7 +126,7 @@ const ViewDocument = () => {
                 width: pageWidth,
                 backgroundColor: 'white'
             }}>
-                {templateItems.map((item, itemKey) => renderItem(item, itemKey))}
+                {templateItems.map((item) => renderItem(item))}
             </div>
         </div>
     );
