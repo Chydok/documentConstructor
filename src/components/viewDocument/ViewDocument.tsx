@@ -28,6 +28,7 @@ const ViewDocument = () => {
                         position: 'absolute',
                         left: +item.attributes['x'],
                         top: +item.attributes['y'],
+                        fontStyle: 'italic'
                     }}>
                     <SimpleTable itemTableID={item.attributes['id']} tableView={true}></SimpleTable>
                 </div>

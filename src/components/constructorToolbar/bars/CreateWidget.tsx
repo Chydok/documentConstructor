@@ -27,7 +27,7 @@ const CreateWidget: React.FC = () => {
             case 'table':
                 newTemplateElement.children = [
                     {
-                        name: "columns",
+                        name: "columns",    
                         attributes: {
                             "height": 35,
                         },

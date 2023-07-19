@@ -102,6 +102,7 @@ const SvgBlock: React.FC = () => {
                     delta.y = event.sourceEvent.y - currentY;
                     templateInfoStore.setSelectedItem(d.attributes['id']);
                     templateInfoStore.setAttrib(d.attributes['id'], 'selected', true);
+                    console.log("children:", d.children, "attributes:", d.attributes);
                 })
                 .on('drag', (event, d) => {
                     const moveX = event.sourceEvent.x - delta.x;
