@@ -118,6 +118,15 @@ class templateInfoStore {
         this.templateItems.push(item);
     }
 
+    addChild = (elemId: string, child: ITemplateElement) => {
+        const findElem = this.searchByName(elemId);
+        if (typeof findElem !== 'undefined') {
+            //console.log("old:", findElem.children)
+            findElem.children.push(child);
+            //console.log("\nnew:", findElem.children)
+        }
+    }
+
     removeStore = () => {
         this.templateItems = [];
         this.templateAttr = {
