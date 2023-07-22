@@ -2,6 +2,7 @@ import React from "react";
 import { observer } from "mobx-react";
 import { Grid, Box } from "@mui/material";
 import templateInfoStore, { ITemplateElement } from "../../../store/templateInfoStore";
+import { relative } from "path";
 
 const CreateWidget: React.FC = () => {
     const handleDragEnd = (event: React.DragEvent<HTMLDivElement>, itemType: string) => {
@@ -15,6 +16,8 @@ const CreateWidget: React.FC = () => {
                 "y": y,
                 "dms:widget": itemType,
                 "dms:title": `${itemType}_${templateInfoStore.lastId}`,
+                "width": 100,
+                "height": 50,
             },
             children: [],
             value: ""
@@ -23,7 +26,20 @@ const CreateWidget: React.FC = () => {
             case 'time':
                 newTemplateElement.value = String(Math.floor(new Date().getTime() / 1000));
                 newTemplateElement.attributes['format'] = 'full';
+                newTemplateElement.attributes['width'] = 230;
+                newTemplateElement.attributes['height'] = 110;
                 break;
+
+            case 'text':
+                newTemplateElement.attributes['width'] = '';
+                newTemplateElement.attributes['height'] = '';
+                break;
+
+            case 'string':
+                newTemplateElement.attributes['width'] = 100;
+                newTemplateElement.attributes['height'] = 70;
+                break;
+                
             case 'table':
                 newTemplateElement.children = [
                     {
@@ -136,6 +152,29 @@ const CreateWidget: React.FC = () => {
                     onDragEnd={event => handleDragEnd(event, 'time')}
                 >
                     Таймер
+                </Box>
+            </Grid>
+            <Grid item xs={4} display="flex" justifyContent="center" alignItems="center">
+                <Box
+                    sx={{
+                        width: 75,
+                        height: 40,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        textAlign: 'center',
+                        bgcolor: '#DA75D6',
+                        cursor: 'pointer',
+                        color: 'white',
+                        '&:hover': {
+                            bgcolor: '#DA75D6',
+                            opacity: [0.9, 0.8, 0.7],
+                        },
+                    }}
+                    draggable
+                    onDragEnd={event => handleDragEnd(event, 'text')}
+                >
+                    Поле
                 </Box>
             </Grid>
         </Grid>

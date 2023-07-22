@@ -9,6 +9,7 @@ import templateInfoStore, { ITemplateElement } from "../../store/templateInfoSto
 
 import '../../styles/ViewDocument.css';
 import { toJS } from "mobx";
+import TextForm from "../TextForm";
 
 const ViewDocument = () => {
     const divRef = useRef<HTMLDivElement>(null);
@@ -33,6 +34,7 @@ const ViewDocument = () => {
                 </div>
             );
         }
+
         if (item.attributes['dms:widget'] === 'string') {
             const stringInfo = xmlDoc && xmlDoc.getElementsByTagName(item.name)[0] ? xmlDoc.getElementsByTagName(item.name)[0].textContent : '';
             return (
@@ -43,8 +45,10 @@ const ViewDocument = () => {
                         position: 'absolute',
                         left: +item.attributes['x'],
                         top: +item.attributes['y'],
+                        height: +item.attributes['height'],
+                        width: +item.attributes['width']
                     }}>
-                    <TextInput name={item.name} inputText={stringInfo || ''}/>
+                    <TextInput attributes={item.attributes} name={item.name} id={item.attributes['id']}/>
                 </div>
             );
         }
@@ -61,6 +65,22 @@ const ViewDocument = () => {
                         top: +item.attributes['y'],
                     }}>
                     <TimeWidget attributes={item.attributes} value={stringInfo && stringInfo !== '' ? stringInfo : item.value}/>
+                </div>
+            );
+        }
+
+        if (item.attributes['dms:widget'] === 'text') {
+            const stringInfo = xmlDoc && xmlDoc.getElementsByTagName(item.name)[0] ? xmlDoc.getElementsByTagName(item.name)[0].textContent : '';
+            return (
+                <div
+                    key={item.name}
+                    id={item.name}
+                    style={{
+                        position: 'absolute',
+                        left: +item.attributes['x'],
+                        top: +item.attributes['y'],
+                    }}>
+                    <TextForm attributes={item.attributes} value={stringInfo && stringInfo !== '' ? stringInfo : item.value}/>
                 </div>
             );
         }
