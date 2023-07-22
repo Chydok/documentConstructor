@@ -19,67 +19,23 @@ const ViewDocument = () => {
     const templateItems = toJS(templateInfoStore.templateItems);
 
     const renderItem = (item: ITemplateElement) => {
-        if (item.attributes['dms:widget'] === 'table') {
-            return (
-                <div 
-                    key={item.attributes['id']}
-                    id={item.attributes['id']}
-                    style={{
-                        position: 'absolute',
-                        left: +item.attributes['x'],
-                        top: +item.attributes['y'],
-                    }}>
-                    <SimpleTable itemTableID={item.attributes['id']} tableView={true}></SimpleTable>
-                </div>
-            );
-        }
-
-        if (item.attributes['dms:widget'] === 'string') {
-            return (
-                <div
-                    key={item.attributes['id']}
-                    id={item.attributes['id']}
-                    style={{
-                        position: 'absolute',
-                        left: +item.attributes['x'],
-                        top: +item.attributes['y'],
-                        height: +item.attributes['height'],
-                        width: +item.attributes['width']
-                    }}>
-                    <TextInput attributes={item.attributes} name={item.name} id={item.attributes['id']}/>
-                </div>
-            );
-        }
-
-        if (item.attributes['dms:widget'] === 'time') {
-            return (
-                <div
-                    key={item.attributes['id']}
-                    id={item.attributes['id']}
-                    style={{
-                        position: 'absolute',
-                        left: +item.attributes['x'],
-                        top: +item.attributes['y'],
-                    }}>
-                    <TimeWidget attributes={item.attributes} value={item.value}/>
-                </div>
-            );
-        }
-
-        if (item.attributes['dms:widget'] === 'text') {
-            return (
-                <div
-                    key={item.attributes['id']}
-                    id={item.attributes['id']}
-                    style={{
-                        position: 'absolute',
-                        left: +item.attributes['x'],
-                        top: +item.attributes['y'],
-                    }}>
-                    <TextForm attributes={item.attributes} value={item.value}/>
-                </div>
-            );
-        }
+        return (
+            <div 
+                key={item.attributes['id']}
+                id={item.attributes['id']}
+                style={{
+                    position: 'absolute',
+                    left: +item.attributes['x'],
+                    top: +item.attributes['y'],
+                    height: +item.attributes['height'] || '',
+                    width: +item.attributes['width'] || ''
+                }}>
+                    {item.attributes['dms:widget'] === 'table' && <SimpleTable itemTableID={item.attributes['id']} tableView={true}></SimpleTable>}
+                    {item.attributes['dms:widget'] === 'string' && <TextInput attributes={item.attributes} name={item.name} id={item.attributes['id']}/>}
+                    {item.attributes['dms:widget'] === 'time' && <TimeWidget attributes={item.attributes} value={item.value}/>}
+                    {item.attributes['dms:widget'] === 'text' && <TextForm attributes={item.attributes} value={item.value}/>}
+            </div>
+        );
     }
 
     useEffect(() => {
