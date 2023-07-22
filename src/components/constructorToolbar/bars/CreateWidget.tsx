@@ -2,7 +2,6 @@ import React from "react";
 import { observer } from "mobx-react";
 import { Grid, Box } from "@mui/material";
 import templateInfoStore, { ITemplateElement } from "../../../store/templateInfoStore";
-import { relative } from "path";
 
 const CreateWidget: React.FC = () => {
     const handleDragEnd = (event: React.DragEvent<HTMLDivElement>, itemType: string) => {
@@ -31,8 +30,8 @@ const CreateWidget: React.FC = () => {
                 break;
 
             case 'text':
-                newTemplateElement.attributes['width'] = '';
-                newTemplateElement.attributes['height'] = '';
+                newTemplateElement.attributes['width'] = 40;
+                newTemplateElement.attributes['height'] = 20;
                 break;
 
             case 'string':
@@ -105,7 +104,7 @@ const CreateWidget: React.FC = () => {
                     draggable
                     onDragEnd={event => handleDragEnd(event, 'string')}
                 >
-                    Текст
+                    Поле ввода
                 </Box>
             </Grid>
             <Grid item xs={4} display="flex" justifyContent="center" alignItems="center">
@@ -174,7 +173,7 @@ const CreateWidget: React.FC = () => {
                     draggable
                     onDragEnd={event => handleDragEnd(event, 'text')}
                 >
-                    Поле
+                    Текст
                 </Box>
             </Grid>
         </Grid>

@@ -3,72 +3,25 @@ import { observer } from "mobx-react";
 import {
     Box,
     Button,
+    FormControl,
     InputAdornment,
-    TextField
+    InputLabel,
+    MenuItem,
+    TextField,
+    OutlinedInput,
+    Select
 } from "@mui/material";
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
 
-import templateInfoStore, { ITemplateElement } from "../../../store/templateInfoStore";
+import templateInfoStore from "../../../store/templateInfoStore";
 
-const ChangeObject: React.FC<{selectedItems: string}> = ({selectedItems}) => {
-    let findTempalteItem: ITemplateElement | undefined;
-
-    if (selectedItems !== '') { findTempalteItem = templateInfoStore.searchByName(selectedItems); }
-
-    const fontStyles = ['bold', 'italic', 'underline']
-
-    const handleChange = (event: SelectChangeEvent<string[]>) => {
-        const {
-            target: { value },
-        } = event;
-        fontStyles.forEach(element => {
-            templateInfoStore.setAttrib(findTempalteItem?.attributes['id'], element, value.includes(element));
-        });
-    };
-
-    let selectedFont = findTempalteItem?.attributes['fontFamily'] !== undefined ? findTempalteItem?.attributes['fontFamily'] : 'sherif';
-    let selectedStyles = ['']
-    fontStyles.forEach(style => {
-        if (findTempalteItem?.attributes[style]) { selectedStyles.push(style) }
-    });
-
-    const handleChangeFontFamily = (event: SelectChangeEvent) => {
-        if (event.target.value != undefined) {
-            templateInfoStore.setAttrib(findTempalteItem!.attributes['id'], 'fontFamily', event.target.value);
-        }
-    };
-
-    let selectedAlign = findTempalteItem?.attributes['align'] !== undefined ? findTempalteItem?.attributes['align'] : '';
-    const handleChangeAlign = (event: SelectChangeEvent) => {
-        if (event.target.value != undefined) {
-            templateInfoStore.setAttrib(findTempalteItem!.attributes['id'], 'align', event.target.value);
-
-            switch (event.target.value) {
-                case 'left':
-                    templateInfoStore.setAttrib(findTempalteItem!.attributes['id'], 'x', 0)
-                    break;
-
-                case 'right':
-                    console.log(findTempalteItem?.value.length)
-                    templateInfoStore.setAttrib(findTempalteItem!.attributes['id'], 'x', (templateInfoStore.templateAttr.width - findTempalteItem!.value.length));
-                    break;
-
-                case 'center':
-                    templateInfoStore.setAttrib(findTempalteItem!.attributes['id'], 'x', (templateInfoStore.templateAttr.width/2 - findTempalteItem!.value.length*3));
-                    break;
-            }
-        }
-    }
+const ChangeObject: React.FC<{item: string}> = ({item}) => {
+    const templateItem = templateInfoStore.searchById(item);
 
     return (
         <>
-            {findTempalteItem &&
+            {templateItem &&
                 <Box>
-                    <Box paddingLeft={1}>ID: {findTempalteItem.attributes['id']}</Box>
+                    <Box paddingLeft={1}>ID: {templateItem.attributes['id']}</Box>
                     <TextField
                         id="name"
                         sx={{m: 1}}
@@ -76,15 +29,15 @@ const ChangeObject: React.FC<{selectedItems: string}> = ({selectedItems}) => {
                         InputProps={{
                             startAdornment: <InputAdornment position="start">name:</InputAdornment>,
                         }}
-                        value={findTempalteItem.name}
+                        value={templateItem.name}
                         onChange={(el) => {
-                            templateInfoStore.setName(findTempalteItem!.attributes['id'], el.target.value)
+                            templateInfoStore.setName(templateItem!.attributes['id'], el.target.value)
                         }}
                     />
                 </Box>
-            } 
+            }
 
-            {(typeof findTempalteItem?.attributes['x'] !== 'undefined') &&
+            {(typeof templateItem?.attributes['x'] !== 'undefined') &&
             <Box>
                 <TextField
                     id="coordX"
@@ -93,10 +46,10 @@ const ChangeObject: React.FC<{selectedItems: string}> = ({selectedItems}) => {
                     InputProps={{
                         startAdornment: <InputAdornment position="start">X:</InputAdornment>,
                     }}
-                    value={findTempalteItem.attributes['x']}
+                    value={templateItem.attributes['x']}
                     onChange={(el) => {
                         const numberCoord = Number(el.target.value.replace(/[^0-9]/g, '')) || 0;
-                        templateInfoStore.setAttrib(findTempalteItem!.attributes['id'], 'x', numberCoord)
+                        templateInfoStore.setAttrib(templateItem!.attributes['id'], 'x', numberCoord)
                     }}
                 />
                 <TextField
@@ -106,33 +59,15 @@ const ChangeObject: React.FC<{selectedItems: string}> = ({selectedItems}) => {
                         startAdornment: <InputAdornment position="start">Y:</InputAdornment>,
                     }}
                     variant="standard"
-                    value={findTempalteItem.attributes['y']}
+                    value={templateItem.attributes['y']}
                     onChange={(el) => {
                         const numberCoord = Number(el.target.value.replace(/[^0-9]/g, '')) || 0;
-                        templateInfoStore.setAttrib(findTempalteItem!.attributes['id'], 'y', numberCoord)
+                        templateInfoStore.setAttrib(templateItem!.attributes['id'], 'y', numberCoord)
                     }}
                 />
             </Box>}
 
-            {(typeof findTempalteItem?.attributes['height'] !== 'undefined' && findTempalteItem?.attributes['dms:widget'] !== 'table') &&
-            <Box>
-                <TextField
-                    id="height"
-                    sx={{m: 1, width: '15ch'}}
-                    variant="standard"
-                    InputProps={{
-                        startAdornment: <InputAdornment position="start">Высота:</InputAdornment>,
-                    }}
-                    value={findTempalteItem.attributes['height']}
-                    onChange={(el) => {
-                        const numberCoord = Number(el.target.value.replace(/[^0-9]/g, '')) || 0;
-                        templateInfoStore.setAttrib(findTempalteItem!.attributes['id'], 'height', numberCoord)
-                    }}
-                />
-            </Box>}
-
-            {(typeof findTempalteItem?.attributes['width'] !== 'undefined' && findTempalteItem?.attributes['dms:widget'] !== 'table'
-            ) &&
+            {(templateItem && typeof templateItem.attributes['width'] !== 'undefined' && templateItem?.attributes['dms:widget'] !== 'table') &&
             <Box>
                 <TextField
                     id="width"
@@ -141,16 +76,32 @@ const ChangeObject: React.FC<{selectedItems: string}> = ({selectedItems}) => {
                     InputProps={{
                         startAdornment: <InputAdornment position="start">Ширина:</InputAdornment>,
                     }}
-                    value={findTempalteItem.attributes['width']}
+                    value={templateItem.attributes['width'] !== '' ? templateItem.attributes['width'] : 100}
                     onChange={(el) => {
-                        const numberCoord = Number(el.target.value.replace(/[^0-9]/g, '')) || 0;
-                        templateInfoStore.setAttrib(findTempalteItem!.attributes['id'], 'width', 
-                        findTempalteItem?.attributes['dms:widget'] === 'text' ? `${findTempalteItem?.value.length}ch` : numberCoord);
+                        const numberWidth = Number(el.target.value.replace(/[^0-9]/g, '')) || 0;
+                        templateInfoStore.setAttrib(templateItem!.attributes['id'], 'width', numberWidth);
                     }}
                 />
             </Box>}
 
-            {(typeof findTempalteItem?.attributes['format'] !== 'undefined') &&
+            {(templateItem && typeof templateItem.attributes['height'] !== 'undefined' && templateItem?.attributes['dms:widget'] !== 'table') &&
+            <Box>
+                <TextField
+                    id="height"
+                    sx={{m: 1, width: '15ch'}}
+                    variant="standard"
+                    InputProps={{
+                        startAdornment: <InputAdornment position="start">Высота:</InputAdornment>,
+                    }}
+                    value={templateItem.attributes['height'] !== '' ? templateItem.attributes['height'] : 65}
+                    onChange={(el) => {
+                        const numberHeight = Number(el.target.value.replace(/[^0-9]/g, '')) || 0;
+                        templateInfoStore.setAttrib(templateItem!.attributes['id'], 'height', numberHeight)
+                    }}
+                />
+            </Box>}
+
+            {(typeof templateItem?.attributes['format'] !== 'undefined') &&
             <Box>
                 <TextField
                     id="format"
@@ -159,9 +110,9 @@ const ChangeObject: React.FC<{selectedItems: string}> = ({selectedItems}) => {
                     InputProps={{
                         startAdornment: <InputAdornment position="start">Формат:</InputAdornment>,
                     }}
-                    value={findTempalteItem.attributes['format']}
+                    value={templateItem.attributes['format']}
                     onChange={(el) => {
-                        templateInfoStore.setAttrib(findTempalteItem!.attributes['id'], 'format', el.target.value)
+                        templateInfoStore.setAttrib(templateItem!.attributes['id'], 'format', el.target.value)
                     }}
                 />
                 <TextField
@@ -171,45 +122,32 @@ const ChangeObject: React.FC<{selectedItems: string}> = ({selectedItems}) => {
                     InputProps={{
                         startAdornment: <InputAdornment position="start">Значение:</InputAdornment>,
                     }}
-                    value={findTempalteItem.value}
+                    value={templateItem.value}
                     onChange={(el) => {
-                        templateInfoStore.setValue(findTempalteItem!.attributes['id'], el.target.value)
+                        templateInfoStore.setValue(templateItem!.attributes['id'], el.target.value)
                     }}
                 />
             </Box>}
 
-            {(findTempalteItem?.attributes['dms:widget'] === 'string' || findTempalteItem?.attributes['dms:widget'] === 'text') &&
+            {(templateItem?.attributes['dms:widget'] === 'string' || templateItem?.attributes['dms:widget'] === 'text') &&
             <Box>
-                <TextField
-                    id="value"
-                    sx={{m: 1, width: '20ch'}}
-                    variant="standard"
-                    InputProps={{
-                        startAdornment: <InputAdornment position="start">Значение:</InputAdornment>,
-                    }}
-                    value={findTempalteItem.value}
-                    onChange={(el) => {
-                        templateInfoStore.setValue(findTempalteItem!.attributes['id'], el.target.value)
-                    }}
-                />
                 <FormControl sx={{ m: 1, width: 150 }}>
                     <InputLabel id="multiple-name-label">Стиль</InputLabel>
                     <Select
-                    labelId="multiple-name-label"
-                    id="multiple-name"
-                    multiple
-                    value={selectedStyles}
-                    onChange={handleChange}
-                    input={<OutlinedInput label="Стиль" />}
-                    >
-                    {fontStyles.map((name) => (
-                        <MenuItem
-                        key={name}
-                        value={name}
+                        labelId="multiple-name-label"
+                        id="multiple-name"
+                        multiple
+                        value={templateItem?.attributes['fontStyle'] || []}
+                        onChange={event => {
+                            templateInfoStore.setAttrib(templateItem?.attributes['id'], 'fontStyle', event.target.value);
+                        }}
+                        input={<OutlinedInput label="Стиль" />}
                         >
-                        {name}
-                        </MenuItem>
-                    ))}
+                        {['bold', 'italic', 'underline'].map((name) => (
+                            <MenuItem key={name} value={name}>
+                                {name}
+                            </MenuItem>
+                        ))}
                     </Select>
                 </FormControl>
                 <FormControl sx={{ m: 1, width: 150 }}>
@@ -217,38 +155,42 @@ const ChangeObject: React.FC<{selectedItems: string}> = ({selectedItems}) => {
                     <Select
                         labelId="font"
                         id="fontSelect"
-                        value={selectedFont}
+                        value={templateItem!.attributes['fontFamily'] || 'sherif'}
                         label="Font"
-                        onChange={handleChangeFontFamily}
+                        onChange={event => {
+                            templateInfoStore.setAttrib(templateItem!.attributes['id'], 'fontFamily', event.target.value);
+                        }}
                     >
                     <MenuItem value={'sherif'}>Sherif</MenuItem>
                     <MenuItem value={'fantasy'}>Fantasy</MenuItem>
                     <MenuItem value={'cursive'}>Cursive</MenuItem>
                     </Select>
                 </FormControl>
-                <FormControl sx={{ m: 1, width: 150 }}>
-                <InputLabel id="align">Выравнивание:</InputLabel> 
-                    <Select
-                        labelId="align"
-                        id="alignSelect"
-                        value={selectedAlign}
-                        label="Align"
-                        onChange={handleChangeAlign}
-                    >
-                    <MenuItem value={'left'}>Слева</MenuItem>
-                    <MenuItem value={'right'}>Справа</MenuItem>
-                    <MenuItem value={'center'}>Центр</MenuItem> 
-                    </Select>
-                </FormControl>
+                <TextField
+                    id="value"
+                    sx={{m: 1}}
+                    variant="standard"
+                    InputProps={{
+                        startAdornment: <InputAdornment position="start">Значение:</InputAdornment>,
+                    }}
+                    value={templateItem.value}
+                    onChange={(el) => {
+                        templateInfoStore.setValue(templateItem!.attributes['id'], el.target.value)
+                    }}
+                />
             </Box>}
 
-            {findTempalteItem &&
+            {templateItem &&
                 <Box>
-                    <Button variant="outlined" 
+                    <Button
+                        variant="outlined"
+                        sx={{ m: 1 }}
                         onClick={() => {
-                            templateInfoStore.removeElement(findTempalteItem?.attributes['id']); 
+                            templateInfoStore.removeElement(templateItem?.attributes['id']); 
                         }}
-                    >Удалить</Button>
+                    >
+                        Удалить
+                    </Button>
                 </Box>
             } 
         </>

@@ -10,11 +10,12 @@ const ConstructorTreeView: React.FC = () => {
     const templateItems = templateInfoStore.templateItems;
 
     const handleClick = (currentTamplateItem: ITemplateElement, event: any) => {
-        templateInfoStore.setSelectedItem(currentTamplateItem.attributes['id'], event);
-        templateInfoStore.setAttrib(currentTamplateItem.attributes['id'], 'selected', true);
-        if (currentTamplateItem.attributes['width'] === undefined) {
-            templateInfoStore.setAttrib(currentTamplateItem.attributes['id'], 'width', 20);
+        if (event.shiftKey) {
+            templateInfoStore.setSelectedItem(currentTamplateItem.attributes['id'], true);
+        } else {
+            templateInfoStore.setSelectedItem(currentTamplateItem.attributes['id'], false);
         }
+        templateInfoStore.setAttrib(currentTamplateItem.attributes['id'], 'selected', true);
     };
 
     const handleTarget = (currentTamplateItem: ITemplateElement, enter: boolean) => {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { observer } from "mobx-react"
 import { TextField } from "@mui/material";
 
@@ -11,18 +11,21 @@ interface ITextInput {
 }
 
 const TextInput: React.FC<ITextInput> = (props) => {
-    const item = templateInfoStore.searchByName(props.id);
-
-    const lab = <label htmlFor={props.id} 
+    const iputItem = templateInfoStore.searchById(props.id);
+    const fontStyle = iputItem.attributes['fontStyle'] || [];
+    const lab = <label
+        htmlFor={props.id} 
         style={{
-            fontFamily: item.attributes['fontFamily'] ? item.attributes['fontFamily'] : 'Sherif',
-            fontWeight: item.attributes['bold'] ? 'bold' : 'unset',
-            fontStyle: item.attributes['italic'] ? 'italic' : 'unset',
-            textDecorationLine: item.attributes['underline'] ? 'underline' : 'unset',
+            fontFamily: iputItem.attributes['fontFamily'] ? iputItem.attributes['fontFamily'] : 'Sherif',
+            fontWeight: fontStyle.includes('bold') ? 'bold' : 'unset',
+            fontStyle: fontStyle.includes('italic') ? 'italic' : 'unset',
+            textDecorationLine: fontStyle.includes('underline') ? 'underline' : 'unset',
             lineHeight:'2em',
         }}
-    >{props.name}</label>
-    
+    >
+        {props.name}
+    </label>;
+
     return (
         <TextField 
             label={lab}
@@ -41,13 +44,13 @@ const TextInput: React.FC<ITextInput> = (props) => {
             }}
             inputProps={{
                 style: {
-                    fontFamily: item.attributes['fontFamily'] ? item.attributes['fontFamily'] : 'Sherif',
-                    fontWeight: item.attributes['bold'] ? 'bold' : 'unset',
-                    fontStyle: item.attributes['italic'] ? 'italic' : 'unset',
-                    textDecorationLine: item.attributes['underline'] ? 'underline' : 'unset',
+                    fontFamily: iputItem.attributes['fontFamily'] ? iputItem.attributes['fontFamily'] : 'Sherif',
+                    fontWeight: fontStyle.includes('bold') ? 'bold' : 'unset',
+                    fontStyle: fontStyle.includes('italic') ? 'italic' : 'unset',
+                    textDecorationLine: fontStyle.includes('underline') ? 'underline' : 'unset',
                 }
             }}
-            value={item.value}
+            value={iputItem.value}
         />
     )
 }

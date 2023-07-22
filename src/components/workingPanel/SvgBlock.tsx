@@ -21,7 +21,7 @@ const SvgBlock: React.FC = () => {
         .attr('height', templateInfoStore.templateAttr.height)
         .style('background-color', 'white')
         .on('click', (event) => {
-            templateInfoStore.setSelectedItem('', event);
+            templateInfoStore.setSelectedItem('', false);
         });
 
     const gridSize = 20;
@@ -71,11 +71,17 @@ const SvgBlock: React.FC = () => {
                     break;
                     
             }
+            if (typeof item.attributes['width'] === 'undefined') {
+                templateInfoStore.setAttrib(item.attributes['id'], 'width', 100);
+            }
+            if (typeof item.attributes['height'] === 'undefined') {
+                templateInfoStore.setAttrib(item.attributes['id'], 'height', 65);
+            }
             newGroup.append('foreignObject')
                     .attr('x', +item.attributes['x'])
                     .attr('y', +item.attributes['y'])
-                    .attr('width', item.attributes['width'] ? item.attributes['width'] : (item.attributes['dms:widget'] === 'text' ? (item.value ? item?.value.length + 'ch' : 'text'.length + 'ch') : 100))
-                    .attr('height', item.attributes['height'] ? item.attributes['height'] : item.attributes['dms:widget'] === 'text' ? 20 : 65)
+                    .attr('width', item.attributes['width'])
+                    .attr('height', item.attributes['height'])
                     .append('xhtml:div')
                         .style('width', '100%')
                         .style('height', '100%')
@@ -85,13 +91,13 @@ const SvgBlock: React.FC = () => {
             newGroup.append('rect')
                     .attr('x', +item.attributes['x'])
                     .attr('y', +item.attributes['y'])
-                    .attr('width', item.attributes['width'] ? item.attributes['width'] : (item.attributes['dms:widget'] === 'text' ? (item.value ? item?.value.length + 'ch' : 'text'.length + 'ch') : 100))
-                    .attr('height', item.attributes['height'] ? item.attributes['height'] : item.attributes['dms:widget'] === 'text' ? 20 : 65)
+                    .attr('width', item.attributes['width'] ? item.attributes['width'] : 100)
+                    .attr('height', item.attributes['height'] ? item.attributes['height'] : 65)
                     .attr('fill', 'transparent')
                     .attr('stroke', `${item.attributes['selected'] === true ? '#408BD5' : ''}`)
                     .attr('stroke-width', 2)
                     .on('click', (event) => {
-                        templateInfoStore.setSelectedItem(item.attributes['id'], event);
+                        templateInfoStore.setSelectedItem(item.attributes['id'], false);
                         templateInfoStore.setAttrib(item.attributes['id'], 'selected', true);
                     })
                     .attr('stroke-dasharray', 5.5);
@@ -108,7 +114,7 @@ const SvgBlock: React.FC = () => {
                     const currentY = +d.attributes['y'];
                     delta.x = event.sourceEvent.x - currentX;
                     delta.y = event.sourceEvent.y - currentY;
-                    templateInfoStore.setSelectedItem(d.attributes['id'], event);
+                    templateInfoStore.setSelectedItem(d.attributes['id'], false);
                     templateInfoStore.setAttrib(d.attributes['id'], 'selected', true);
                 })
                 .on('drag', (event, d) => {

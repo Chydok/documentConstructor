@@ -15,12 +15,6 @@ export function xmlToArray (xml: HTMLElement) {
                 }
             }
 
-            if (xmlItem.nodeName === 'record' || xmlItem.nodeName === 'columns') {
-                if (xml.getElementsByTagName(xmlItem.nodeName)[0].attributes.getNamedItem('height') === null) {
-                    element.attributes['height'] = 35;
-                }
-            }
-
             for (let i = 0; i < xml.getElementsByTagName(xmlItem.nodeName)[0].attributes.length; i++) {
                 const nodeAttr = xml.getElementsByTagName(xmlItem.nodeName)[0].attributes[i];
                 element.attributes[nodeAttr.nodeName] = nodeAttr.nodeValue;

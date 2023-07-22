@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { observer } from "mobx-react"
 
 import templateInfoStore from '../store/templateInfoStore';
+import { Box } from "@mui/material";
 
 interface ITextForm {
     attributes: any
@@ -9,24 +10,23 @@ interface ITextForm {
 }
 
 const TextForm: React.FC<ITextForm> = (props) => {
-    const item = templateInfoStore.searchByName(props.attributes['id']);
+    const textItem = templateInfoStore.searchById(props.attributes['id']);
+    const fontStyle = textItem.attributes['fontStyle'] || [];
 
     return (
-        <input
+        <Box
             key={props.attributes['id']}
             style={{
-                fontFamily: item.attributes['fontFamily'] ? item.attributes['fontFamily'] : 'Sherif',
+                fontFamily: textItem.attributes['fontFamily'] ? textItem.attributes['fontFamily'] : 'Sherif',
                 backgroundColor: 'transparent',
-                border: '0px',
-                fontWeight: item.attributes['bold'] ? 'bold' : 'unset',
-                fontStyle: item.attributes['italic'] ? 'italic' : 'unset',
-                textDecorationLine: item.attributes['underline'] ? 'underline' : 'unset',
-                width: item.value ? item.value.length + 'ch' : 'text'.length + 'ch',
+                border: '0',
+                fontWeight: fontStyle.includes('bold') ? 'bold' : 'unset',
+                fontStyle: fontStyle.includes('italic') ? 'italic' : 'unset',
+                textDecorationLine: fontStyle.includes('underline') ? 'underline' : 'unset',
             }}
-            
-            value={item.value ? item.value : 'text'} 
-            onChange={(event) => templateInfoStore.setValue(item.attributes['id'], event.target.value)}
-        />
+        >
+            {textItem.value ? textItem.value : 'text'}
+        </Box>
     )
 }
 
