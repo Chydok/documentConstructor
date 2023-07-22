@@ -16,7 +16,7 @@ const MainMenu: React.FC = () => {
                     fetch(testXml).then(response => response.text()).then(text => {
                         const parser: DOMParser = new DOMParser();
                         const xmlDoc: Document = parser.parseFromString(text, 'text/xml');
-                        
+
                         for (let attr in templateInfoStore.templateAttr) {
                             xmlDoc.documentElement.setAttribute(attr, get(templateInfoStore.templateAttr, attr)) 
                         }

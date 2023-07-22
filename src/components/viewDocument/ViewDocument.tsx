@@ -27,8 +27,8 @@ const ViewDocument = () => {
                     position: 'absolute',
                     left: +item.attributes['x'],
                     top: +item.attributes['y'],
-                    height: +item.attributes['height'] || '',
-                    width: +item.attributes['width'] || ''
+                    height: item.attributes['dms:widget'] === 'string' ? +item.attributes['height'] : '',
+                    width: item.attributes['dms:widget'] === 'string' ? +item.attributes['width'] : ''
                 }}>
                     {item.attributes['dms:widget'] === 'table' && <SimpleTable itemTableID={item.attributes['id']} tableView={true}></SimpleTable>}
                     {item.attributes['dms:widget'] === 'string' && <TextInput attributes={item.attributes} name={item.name} id={item.attributes['id']}/>}
@@ -46,7 +46,7 @@ const ViewDocument = () => {
                 const obj1 = objects[i] as HTMLElement;
                 const findObj = coordTemp.find(item => item.id === obj1.id);
                 const rect1 = obj1.getBoundingClientRect();
-
+                console.log(rect1.height, findObj?.height);
                 if (+rect1.height > +findObj?.height!) {
                     const diffHeidth = +rect1.height - +findObj?.height!;
 
