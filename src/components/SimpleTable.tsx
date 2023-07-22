@@ -31,14 +31,14 @@ const SimpleTable: React.FC<{itemTableID: string, tableView?: boolean}> = (props
                 >
                 {row.children.map(cell => {
                     if (rowType === 'columns') {
-                        tableWidth += cell.attributes['width'] || 25;
+                        tableWidth += cell.attributes['width'];
                     }
                     return (
                         <TableCell
                             key={cell.attributes['id']}
                             style={{
-                                minWidth: +cell.attributes['width'] || 25,
-                                maxWidth: +cell.attributes['width'] || 25,
+                                minWidth: +cell.attributes['width'],
+                                maxWidth: +cell.attributes['width'],
                                 lineHeight: 1,
                                 backgroundColor: cell.attributes['selected'] ? 'lightgray' : cell.attributes['targeted'] ? 'lightblue' : 'transparent',
                                 overflow: 'hidden',
@@ -71,8 +71,8 @@ const SimpleTable: React.FC<{itemTableID: string, tableView?: boolean}> = (props
                                         <TableCell
                                             key={cell.attributes['id'] + keyRI}
                                             style={{
-                                                minWidth: +cell.attributes['width'] || 25,
-                                                maxWidth: +cell.attributes['width'] || 25,
+                                                minWidth: +cell.attributes['width'],
+                                                maxWidth: +cell.attributes['width'],
                                                 lineHeight: 1,
                                                 backgroundColor: 'white',
                                                 overflow: 'hidden',

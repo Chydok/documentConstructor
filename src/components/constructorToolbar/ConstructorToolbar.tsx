@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { observer } from "mobx-react";
 import { Box, Tab, Tabs } from "@mui/material";
 
-import ChangeObjec from "./bars/ChangeObject";
+import ChangeObject from "./bars/ChangeObject";
 import CreateWidget from "./bars/CreateWidget";
+
 import templateInfoStore from "../../store/templateInfoStore";
 
 import '../../styles/ConstructorToolbar.css';
@@ -45,7 +46,7 @@ const ConstructorToolbar: React.FC = () => {
                 <Tab label="Виджеты"/>
             </Tabs>
             <TabPanel value={tabValue} index={0}>
-                <ChangeObjec selectedItems={templateInfoStore.selectedItems} />
+                <ChangeObject item={templateInfoStore.selectedItems[0]}/>
             </TabPanel>
             <TabPanel value={tabValue} index={1}>
                 <CreateWidget />

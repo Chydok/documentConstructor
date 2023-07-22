@@ -32,11 +32,10 @@ class templateInfoStore {
     };
 
     dataXml?: Document;
-    selectedItems: string = '';
+    selectedItems: Array<string> = [];
     targetedItems: string = '';
     lastId: number = 1;
     coordTemp: Array<ICoordTemp> = [];
-    selectedItemsArray: Array<string> = [];
 
     constructor() {
         makeAutoObservable(this);
@@ -86,7 +85,7 @@ class templateInfoStore {
         findElem!.attributes['y'] = y;
     }
 
-    searchByName(targetId: string): ITemplateElement {
+    searchById(targetId: string): ITemplateElement {
         const result: ITemplateElement[] = [];
     
         const findNode = (node: ITemplateElement) => {
@@ -106,21 +105,15 @@ class templateInfoStore {
         return result[0];
     }
 
-    setSelectedItem = (newSelectItem: string, event: any) => {
-        if (this.selectedItemsArray.length === 0) { this.setAttrib(this.selectedItems, 'selected', false); }
-        this.selectedItems = newSelectItem;
-        
-        if (event.nativeEvent !== undefined) {
-            if (event.nativeEvent.shiftKey) { 
-                this.selectedItemsArray.push(newSelectItem); 
-            } else {
-                if (this.selectedItemsArray.length > 0) {
-                    this.selectedItemsArray.forEach(element => {
-                        this.setAttrib(element, 'selected', false);
-                    });
-                    this.selectedItemsArray.length = 0;
-                }
-            }
+    setSelectedItem = (newSelectItem: string, mutly: boolean) => {
+        if (mutly === false) {
+            this.selectedItems.forEach(selectedItem => {
+                this.setAttrib(selectedItem, 'selected', false);
+            });
+            this.selectedItems = [];
+        }
+        if (!this.selectedItems.includes(newSelectItem)) {
+            this.selectedItems.push(newSelectItem);
         }
     }
 
@@ -129,32 +122,24 @@ class templateInfoStore {
         this.targetedItems = newTargetItem;
     }
 
-    setAttrib = (elemId: string, attribName: string, value: string | number | boolean) => { 
-        if (this.selectedItemsArray.length > 0 && this.selectedItemsArray.includes(elemId)) {
-            this.selectedItemsArray.forEach(element => {
-                const findEl = this.searchByName(element);
-                if (typeof findEl !== 'undefined') { findEl.attributes[attribName] = value; }
-            });
-        } else {
-            const findElem = this.searchByName(elemId);
-            if (typeof findElem !== 'undefined') { findElem.attributes[attribName] = value; }
+    setAttrib = (elemId: string, attribName: string, value: string | number | boolean | string[]) => {
+        const findElem = this.searchById(elemId);
+        if (typeof findElem !== 'undefined') {
+            findElem.attributes[attribName] = value;
         }
     }
 
     setValue = (elemId: string, value: string) => { 
-        if (this.selectedItemsArray.length > 0 && this.selectedItemsArray.includes(elemId)) {
-            this.selectedItemsArray.forEach(element => {
-                const findEl = this.searchByName(element);
-                if (typeof findEl !== 'undefined') { findEl.value = value; }
-            });
-        } else {
-            const findElem = this.searchByName(elemId);
-            if (typeof findElem !== 'undefined') { findElem.value = value; }
-        }
+        this.selectedItems.forEach(element => {
+            const findEl = this.searchById(element);
+            if (typeof findEl !== 'undefined') {
+                findEl.value = value;
+            }
+        });
     }
 
     setName = (elemId: string, name: string) => { 
-        const findElem = this.searchByName(elemId);
+        const findElem = this.searchById(elemId);
         if (typeof findElem !== 'undefined') { findElem.name = name; }
     }
 
@@ -164,7 +149,7 @@ class templateInfoStore {
     }
 
     removeElement = (elemId: string) => {
-        const delElem = this.templateItems.indexOf(this.searchByName(elemId));
+        const delElem = this.templateItems.indexOf(this.searchById(elemId));
         if (delElem > -1) {
             this.templateItems.splice(delElem, 1);
         }

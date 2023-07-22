@@ -19,71 +19,23 @@ const ViewDocument = () => {
     const templateItems = toJS(templateInfoStore.templateItems);
 
     const renderItem = (item: ITemplateElement) => {
-        const xmlDoc = templateInfoStore.dataXml;
-        if (item.attributes['dms:widget'] === 'table') {
-            return (
-                <div 
-                    key={item.name}
-                    id={item.name}
-                    style={{
-                        position: 'absolute',
-                        left: +item.attributes['x'],
-                        top: +item.attributes['y'],
-                    }}>
-                    <SimpleTable itemTableID={item.attributes['id']} tableView={true}></SimpleTable>
-                </div>
-            );
-        }
-
-        if (item.attributes['dms:widget'] === 'string') {
-            const stringInfo = xmlDoc && xmlDoc.getElementsByTagName(item.name)[0] ? xmlDoc.getElementsByTagName(item.name)[0].textContent : '';
-            return (
-                <div
-                    key={item.name}
-                    id={item.name}
-                    style={{
-                        position: 'absolute',
-                        left: +item.attributes['x'],
-                        top: +item.attributes['y'],
-                        height: +item.attributes['height'],
-                        width: +item.attributes['width']
-                    }}>
-                    <TextInput attributes={item.attributes} name={item.name} id={item.attributes['id']}/>
-                </div>
-            );
-        }
-
-        if (item.attributes['dms:widget'] === 'time') {
-            const stringInfo = xmlDoc && xmlDoc.getElementsByTagName(item.name)[0] ? xmlDoc.getElementsByTagName(item.name)[0].textContent : '';
-            return (
-                <div
-                    key={item.name}
-                    id={item.name}
-                    style={{
-                        position: 'absolute',
-                        left: +item.attributes['x'],
-                        top: +item.attributes['y'],
-                    }}>
-                    <TimeWidget attributes={item.attributes} value={stringInfo && stringInfo !== '' ? stringInfo : item.value}/>
-                </div>
-            );
-        }
-
-        if (item.attributes['dms:widget'] === 'text') {
-            const stringInfo = xmlDoc && xmlDoc.getElementsByTagName(item.name)[0] ? xmlDoc.getElementsByTagName(item.name)[0].textContent : '';
-            return (
-                <div
-                    key={item.name}
-                    id={item.name}
-                    style={{
-                        position: 'absolute',
-                        left: +item.attributes['x'],
-                        top: +item.attributes['y'],
-                    }}>
-                    <TextForm attributes={item.attributes} value={stringInfo && stringInfo !== '' ? stringInfo : item.value}/>
-                </div>
-            );
-        }
+        return (
+            <div 
+                key={item.attributes['id']}
+                id={item.attributes['id']}
+                style={{
+                    position: 'absolute',
+                    left: +item.attributes['x'],
+                    top: +item.attributes['y'],
+                    height: item.attributes['dms:widget'] === 'string' ? +item.attributes['height'] : '',
+                    width: item.attributes['dms:widget'] === 'string' ? +item.attributes['width'] : ''
+                }}>
+                    {item.attributes['dms:widget'] === 'table' && <SimpleTable itemTableID={item.attributes['id']} tableView={true}></SimpleTable>}
+                    {item.attributes['dms:widget'] === 'string' && <TextInput attributes={item.attributes} name={item.name} id={item.attributes['id']}/>}
+                    {item.attributes['dms:widget'] === 'time' && <TimeWidget attributes={item.attributes} value={item.value}/>}
+                    {item.attributes['dms:widget'] === 'text' && <TextForm attributes={item.attributes} value={item.value}/>}
+            </div>
+        );
     }
 
     useEffect(() => {
@@ -92,46 +44,19 @@ const ViewDocument = () => {
             const coordTemp = templateInfoStore.coordTemp;
             for (let i = 0; i < objects.length; i++) {
                 const obj1 = objects[i] as HTMLElement;
+                const findObj = coordTemp.find(item => item.id === obj1.id);
                 const rect1 = obj1.getBoundingClientRect();
+                console.log(rect1.height, findObj?.height);
+                if (+rect1.height > +findObj?.height!) {
+                    const diffHeidth = +rect1.height - +findObj?.height!;
 
-                for (let j = i + 1; j < objects.length; j++) {
-                    const obj2 = objects[j] as HTMLElement;
-                    const rect2 = obj2.getBoundingClientRect();
+                    for (let j = i + 1; j < objects.length; j++) {
+                        const obj2 = objects[j] as HTMLElement;
+                        const rect2 = obj2.getBoundingClientRect();
 
-                    if (rect1.left < rect2.right && rect1.right > rect2.left &&
-                        rect1.top < rect2.bottom && rect1.bottom > rect2.top) {
-                        if (rect1.top < rect2.top) {
-                            if (rect1.bottom > rect2.top) {
-                                const findObj = coordTemp.find(item => item.name === obj1.id);
-                                const findObj2 = coordTemp.find(item => item.name === obj2.id);
-                                const objDiff = findObj?.widget === 'table' ?
-                                    +findObj2!.y - ((+findObj?.y) + findObj?.height)
-                                    : 0;
-                                if (findObj2) {
-                                    templateInfoStore.setAttrib(
-                                        findObj2.id,
-                                        'y',
-                                        (+rect1.bottom + objDiff)
-                                    );
-                                }
-                            }
-                        }
-
-                        if (rect2.top < rect1.top) {
-                            if (rect2.bottom > rect1.top) {
-                                const findObj = coordTemp.find(item => item.name === obj2.id);
-                                const findObj2 = coordTemp.find(item => item.name === obj1.id);
-                                const objDiff = findObj?.widget === 'table' ?
-                                    +findObj2!.y - ((+findObj?.y) + findObj?.height)
-                                    : 0;
-                                if (findObj2) {
-                                    templateInfoStore.setAttrib(
-                                        findObj2.id,
-                                        'y',
-                                        (+rect2.bottom + objDiff)
-                                    );
-                                }
-                            }
+                        if (rect1.top < rect2.top && rect1.left < rect2.right && rect1.right > rect2.left) {
+                            const findObj2 = coordTemp.find(item => item.id === obj2.id);
+                            templateInfoStore.setAttrib(findObj2!.id, 'y', +findObj2!.y + diffHeidth);
                         }
                     }
                 }

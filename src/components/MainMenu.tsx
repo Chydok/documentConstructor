@@ -5,18 +5,18 @@ import templateInfoStore from '../store/templateInfoStore';
 import { get } from 'mobx';
 import { storeToXml } from '../util/parser';
 
-const MainMenu = () => {
+const MainMenu: React.FC = () => {
     return (
         <div className='mainDiv'>
             <div className='mainInfo'>Document Constructor</div>
             <button 
                 className='menuSaveButton'
                 onClick={() => {
-                    const testXml = require('../new_data.xml');
+                    const testXml = require('../production_log.xml');
                     fetch(testXml).then(response => response.text()).then(text => {
                         const parser: DOMParser = new DOMParser();
                         const xmlDoc: Document = parser.parseFromString(text, 'text/xml');
-                        
+
                         for (let attr in templateInfoStore.templateAttr) {
                             xmlDoc.documentElement.setAttribute(attr, get(templateInfoStore.templateAttr, attr)) 
                         }
