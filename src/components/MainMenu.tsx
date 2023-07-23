@@ -18,9 +18,12 @@ const MainMenu: React.FC = () => {
                         const xmlDoc: Document = parser.parseFromString(text, 'text/xml');
 
                         for (let attr in templateInfoStore.templateAttr) {
-                            xmlDoc.documentElement.setAttribute(attr, get(templateInfoStore.templateAttr, attr)) 
+                            xmlDoc.documentElement.setAttribute(attr, get(templateInfoStore.templateAttr, attr));
+                            xmlDoc.documentElement.setAttribute('id', 'dms_0');
                         }
-
+                        while (xmlDoc.documentElement.firstChild) {
+                            xmlDoc.documentElement.removeChild(xmlDoc.documentElement.firstChild);
+                        }
                         const newXmlDoc = storeToXml(xmlDoc.documentElement, templateInfoStore.templateItems);
                         const serializer = new XMLSerializer();
                         const xmlString = serializer.serializeToString(newXmlDoc);

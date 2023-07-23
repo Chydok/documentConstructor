@@ -33,25 +33,15 @@ export function xmlToArray (xml: HTMLElement) {
 
 export function storeToXml(xmlDoc: Element, storeItems: Array<ITemplateElement>) {
     for (let item of storeItems) {
-        if (xmlDoc.getElementsByTagName(item.name)[0]) {
-            const findXmlElem = xmlDoc.getElementsByTagName(item.name)[0];
-            for (let attr in item.attributes) {
-                findXmlElem.setAttribute(attr, item.attributes[attr]);
-            }
-            if (item.children.length > 0) {
-                storeToXml(findXmlElem, item.children);
-            }
-        } else {
-            const tempXmlDoc = document.implementation.createDocument('', '', null);
-            const xmlElem = tempXmlDoc.createElement(item.name);
-            for (let attr in item.attributes) {
-                xmlElem.setAttribute(attr, item.attributes[attr]);
-            }
-            if (item.children.length > 0) {
-                storeToXml(xmlElem, item.children);
-            }
-            xmlDoc.appendChild(xmlElem);
+        const tempXmlDoc = document.implementation.createDocument('', '', null);
+        const xmlElem = tempXmlDoc.createElement(item.name);
+        for (let attr in item.attributes) {
+            xmlElem.setAttribute(attr, item.attributes[attr]);
         }
+        if (item.children.length > 0) {
+            storeToXml(xmlElem, item.children);
+        }
+        xmlDoc.appendChild(xmlElem);
     };
     return xmlDoc;
 }

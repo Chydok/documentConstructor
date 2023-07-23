@@ -46,7 +46,7 @@ const ConstructorToolbar: React.FC = () => {
                 <Tab label="Виджеты"/>
             </Tabs>
             <TabPanel value={tabValue} index={0}>
-                <ChangeObject item={templateInfoStore.selectedItems[0]}/>
+                <ChangeObject selectedItems={templateInfoStore.selectedItems[0]}/>
             </TabPanel>
             <TabPanel value={tabValue} index={1}>
                 <CreateWidget />

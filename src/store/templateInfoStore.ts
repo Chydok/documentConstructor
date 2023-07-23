@@ -155,6 +155,18 @@ class templateInfoStore {
         }
     }
 
+    addChild = (elemId: string, newChild: ITemplateElement) => {
+        const findElem = this.searchById(elemId);
+        if (typeof findElem !== 'undefined') {
+            this.lastId = this.generateIds([newChild], this.lastId);
+            if (newChild.name === 'columns') {
+                findElem.children.unshift(newChild);
+            } else {
+                findElem.children.push(newChild);
+            }
+        }
+    }
+
     removeStore = () => {
         this.templateItems = [];
         this.templateAttr = {

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { toJS } from "mobx";
 import { observer } from "mobx-react";
 import ReactFauxDom from 'react-faux-dom';
@@ -8,12 +8,17 @@ import SimpleTable from "../SimpleTable";
 import TextInput from "../TextInput";
 import TextForm from "../TextForm";
 import TimeWidget from "../TimeWidget";
+import SideMenu from "../SideMenu";
 
-import templateInfoStore from '../../store/templateInfoStore';
+import templateInfoStore, { ITemplateElement } from '../../store/templateInfoStore';
 
 import '../../styles/WorkingPanel.css';
 
 const SvgBlock: React.FC = () => {
+    const [menuItem, setMenuItem] = useState<ITemplateElement | null>(null);
+    const [menuOpen, setMenuOpen] = useState<boolean>(false);
+    const [mousePosX, setMousePosX] = useState<number>(0);
+    const [mousePosY, setMousePosY] = useState<number>(0);
     const svgSpace: ReactFauxDom.Element = new ReactFauxDom.Element('svg');
     const templateItems = toJS(templateInfoStore.templateItems);
     d3.select('svg')
@@ -50,6 +55,7 @@ const SvgBlock: React.FC = () => {
                 .attr('x', +item.attributes['x'])
                 .attr('y', +item.attributes['y'])
                 .style("cursor", "pointer");
+                
 
         if (['table', 'string', 'time', 'text'].indexOf(item.attributes['dms:widget']) !== -1) {
             let addHtmlElement = <></>;
@@ -99,8 +105,18 @@ const SvgBlock: React.FC = () => {
                     .on('click', (event) => {
                         templateInfoStore.setSelectedItem(item.attributes['id'], false);
                         templateInfoStore.setAttrib(item.attributes['id'], 'selected', true);
+                        item.attributes['selected'] = true;
                     })
-                    .attr('stroke-dasharray', 5.5);
+                    .attr('stroke-dasharray', 5.5)
+                    .on('contextmenu', event => {
+                        if (item.attributes['dms:widget'] === 'table') {
+                            event.preventDefault();
+                            setMousePosX(event.clientX);
+                            setMousePosY(event.clientY);
+                            setMenuItem(item);
+                            setMenuOpen(true);
+                        }
+                    });
         }
     });
 
@@ -128,6 +144,15 @@ const SvgBlock: React.FC = () => {
 
     return (
         <div className="svgDiv">
+            {menuItem?.attributes['selected'] === true && 
+            <SideMenu
+                item={menuItem}
+                open={menuOpen}
+                left={mousePosX}
+                top={mousePosY}
+                setMenuItem={setMenuItem}
+                setMenuOpen={setMenuOpen}
+            />}
             {svgSpace!.toReact()}
         </div>
     );

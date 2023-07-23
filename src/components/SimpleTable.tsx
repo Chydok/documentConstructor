@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react';
+import { observer } from 'mobx-react';
+import { toJS } from 'mobx';
 import { 
     Table,
     TableBody,
@@ -6,10 +8,8 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    Paper
+    Paper,
 } from '@mui/material';
-import { observer } from 'mobx-react';
-import { toJS } from 'mobx';
 
 import templateInfoStore from '../store/templateInfoStore';
 
@@ -28,13 +28,16 @@ const SimpleTable: React.FC<{itemTableID: string, tableView?: boolean}> = (props
                     height: +row.attributes['height'],
                     backgroundColor: row.attributes['selected'] ? 'lightgray' : 'transparent',
                 }}
-                >
+            >
                 {row.children.map(cell => {
                     if (rowType === 'columns') {
                         tableWidth += cell.attributes['width'];
                     }
+                    const cellFontStyle = cell?.attributes['fontStyle'] ? cell?.attributes['fontStyle'] : table?.attributes['fontStyle'];
+                    const cellFontFamily = cell?.attributes['fontFamily'] ? cell?.attributes['fontFamily'] : table?.attributes['fontFamily'];
                     return (
                         <TableCell
+                            id={table.attributes['id']}
                             key={cell.attributes['id']}
                             style={{
                                 minWidth: +cell.attributes['width'],
@@ -42,8 +45,11 @@ const SimpleTable: React.FC<{itemTableID: string, tableView?: boolean}> = (props
                                 lineHeight: 1,
                                 backgroundColor: cell.attributes['selected'] ? 'lightgray' : cell.attributes['targeted'] ? 'lightblue' : 'transparent',
                                 overflow: 'hidden',
-                                textOverflow: 'clip'
+                                textOverflow: 'clip',
+                                fontStyle: cellFontStyle,
+                                fontFamily: cellFontFamily,
                             }}
+                            
                         >
                             {rowType === 'columns' ? cell.attributes['dms:title'] : cell.name}
                         </TableCell>);
@@ -65,7 +71,7 @@ const SimpleTable: React.FC<{itemTableID: string, tableView?: boolean}> = (props
                                 sx={{
                                     height: +row.attributes['height'],
                                 }}
-                                >
+                            >
                                 {row.children.map(cell => {
                                     return (
                                         <TableCell
@@ -76,7 +82,7 @@ const SimpleTable: React.FC<{itemTableID: string, tableView?: boolean}> = (props
                                                 lineHeight: 1,
                                                 backgroundColor: 'white',
                                                 overflow: 'hidden',
-                                                textOverflow: 'clip'
+                                                textOverflow: 'clip',
                                             }}
                                         >
                                             {recordInfo.getElementsByTagName(cell.name)[0].textContent}
@@ -100,13 +106,14 @@ const SimpleTable: React.FC<{itemTableID: string, tableView?: boolean}> = (props
     return (
         <TableContainer component={Paper}>
         <Table padding='none'>
-          <TableHead>
-            {tableRow('columns')}
+          <TableHead>   
+            {tableRow('columns')}   
           </TableHead>
           <TableBody>
             {props.tableView ? viewRow() : tableRow('record')}
           </TableBody>
         </Table>
+        
       </TableContainer>
     );
 }
