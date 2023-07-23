@@ -49,7 +49,6 @@ const SimpleTable: React.FC<{itemTableID: string, tableView?: boolean}> = (props
                                 overflow: 'hidden',
                                 textOverflow: 'clip',
                                 fontStyle: cellFontStyle,
-                                //font:'sans-serif',
                                 fontFamily: cellFontFamily,
                             }}
                             

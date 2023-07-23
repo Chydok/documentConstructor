@@ -9,16 +9,12 @@ import {
     FormControl,
     MenuItem,
     InputLabel,
-    Button,
-    Menu
 } from "@mui/material";
 
 import templateInfoStore, { ITemplateElement } from "../../../store/templateInfoStore";
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 const ChangeObject: React.FC<{selectedItems: string}> = ({selectedItems}) => {
-
-
     const [fontFamily, setFontFamily] = React.useState('');
 
     const handleChangeFontFamily = (event: SelectChangeEvent) => {
@@ -27,7 +23,6 @@ const ChangeObject: React.FC<{selectedItems: string}> = ({selectedItems}) => {
             templateInfoStore.setAttrib(findTemplateItem!.attributes['id'], 'fontFamily', event.target.value)
         }
     };
-
 
     const handleChangeSwitch = (event: React.ChangeEvent<HTMLInputElement>, item: ITemplateElement) => {
         const font = event.target.checked ? 'italic' : '';
@@ -41,54 +36,11 @@ const ChangeObject: React.FC<{selectedItems: string}> = ({selectedItems}) => {
         }
     };
 
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const open = Boolean(anchorEl);
-    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
-    const handleAddCellVertical = () => {
-    //const table = document.getElementById(findTemplateItem?.attributes['id']) as HTMLTableElement;
-    const table = findTemplateItem?.attributes['id']
-    if (table !== undefined && table !== null) {
-        const defualtChild: ITemplateElement = {
-            name: `newRecord`, 
-            attributes: {
-                "dms:widget": "number",
-                "width": 55,
-            },
-            children: [
-                {
-                name: "meowmeow",
-                attributes: {
-                    "dms:title": "Тест2",
-                    "width": 55,
-                },
-                children: [],
-                value: ""
-                },
-            ],
-            value: ""
-        };
-        templateInfoStore.addChild(findTemplateItem?.attributes['id'], defualtChild);
-    }
-
-    
-      };
-    
-      const handleAddCellHorizontal = () => {
-        
-      };
-
     let findTemplateItem: ITemplateElement | undefined;
     if (selectedItems !== '') {
         findTemplateItem = templateInfoStore.searchByName(selectedItems);
     }
     return (
-        
         <>
             {findTemplateItem &&
                 <Box>
@@ -152,8 +104,6 @@ const ChangeObject: React.FC<{selectedItems: string}> = ({selectedItems}) => {
                         templateInfoStore.setAttrib(findTemplateItem!.attributes['id'], 'height', numberCoord)
                     }}
                 />
-                
-                
             </Box>}
             {(typeof findTemplateItem?.attributes['width'] !== 'undefined' && findTemplateItem?.attributes['dms:widget'] !== 'table') &&
             <Box>
@@ -200,70 +150,36 @@ const ChangeObject: React.FC<{selectedItems: string}> = ({selectedItems}) => {
                     }}
                     
                 />
-                
-                
             </Box>}
-            
-            {//TODO под одно условие некст 2 отображения засунуть
-            ((findTemplateItem?.attributes['dms:widget'] !== 'time' || findTemplateItem?.attributes['dms:widget'] !== 'string') && findTemplateItem?.attributes !== undefined) &&
-                <Box sx={{ minWidth: 120 }}>
+            {findTemplateItem && ['time', 'string'].indexOf(findTemplateItem?.attributes['dms:widget']) === -1 &&
+                <Box sx={{m: 1, width: '20ch'}}>
                     <FormControl fullWidth> 
-                    <InputLabel id="font">Font</InputLabel> 
-                        <Select
-                            labelId="font"
-                            id="fontSelect"
-                            value={fontFamily}
-                            label="Font"
-                            onChange={handleChangeFontFamily}
-                        >
-                        <MenuItem value={'sherif'}>Sherif</MenuItem>
-                        <MenuItem value={'fantasy'}>Fantasy</MenuItem>
-                        <MenuItem value={'cursive'}>Cursive</MenuItem>
-                    </Select>
+                        <InputLabel id="font">Font</InputLabel> 
+                            <Select
+                                labelId="font"
+                                id="fontSelect"
+                                value={fontFamily}
+                                label="Font"
+                                onChange={handleChangeFontFamily}
+                            >
+                            <MenuItem value={'sherif'}>Sherif</MenuItem>
+                            <MenuItem value={'fantasy'}>Fantasy</MenuItem>
+                            <MenuItem value={'cursive'}>Cursive</MenuItem>
+                        </Select>
                     </FormControl>
-                </Box>
-            }{((findTemplateItem?.attributes['dms:widget'] !== 'time' || findTemplateItem?.attributes['dms:widget'] !== 'string') && findTemplateItem?.attributes !== undefined) &&
-            <FormControlLabel 
-                control={
-                    <Switch
-                        onChange={event => handleChangeSwitch(event, findTemplateItem!)}
-                        inputProps={{ 'aria-label': 'controlled' }}
-                        color="secondary" />}
-                        label="italics" 
+                    <FormControlLabel
+                        label={'Italic'}
+                        control={
+                            <Switch
+                                onChange={event => handleChangeSwitch(event, findTemplateItem!)}
+                                inputProps={{ 'aria-label': 'controlled' }}
+                                color="secondary"
+                                value={'Italic'}
+                            />
+                        }
                     />
-            }{findTemplateItem?.attributes['dms:widget'] == 'table' &&
-            <div>
-                <Button
-                    id="demo-positioned-button"
-                    aria-controls={open ? 'demo-positioned-menu' : undefined}
-                    aria-haspopup="true"
-                    aria-expanded={open ? 'true' : undefined}
-                    onClick={handleClick}
-                >
-                    Менюшка
-                </Button>
-                <Menu
-                    id="demo-positioned-menu"
-                    aria-labelledby="demo-positioned-button"
-                    anchorEl={anchorEl}
-                    open={open}
-                    onClose={handleClose}
-                    anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'left',
-                    }}
-                    transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'left',
-                    }}
-                >
-                    <MenuItem onClick={handleAddCellVertical}>Добавить ячейку по вертикали</MenuItem>
-                    <MenuItem onClick={handleAddCellHorizontal}>Добавить ячейку по горизонтали</MenuItem>
-                    <MenuItem onClick={handleClose}>Хз</MenuItem>
-                </Menu>
-            </div>
+                </Box>
             }
-            
         </>
     )
 }

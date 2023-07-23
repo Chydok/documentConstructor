@@ -3,7 +3,6 @@ import { toJS } from "mobx";
 import { observer } from "mobx-react";
 import ReactFauxDom from 'react-faux-dom';
 import * as d3 from "d3";
-import ReactDOM from 'react-dom';
 
 import SimpleTable from "../SimpleTable";
 import TextInput from "../TextInput";
@@ -14,12 +13,11 @@ import templateInfoStore, { ITemplateElement } from '../../store/templateInfoSto
 
 import '../../styles/WorkingPanel.css';
 
-// let menuOpen = false;
-
 const SvgBlock: React.FC = () => {
     const [menuItem, setMenuItem] = useState<ITemplateElement | null>(null);
     const [menuOpen, setMenuOpen] = useState<boolean>(false);
-    const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
+    const [mousePosX, setMousePosX] = useState<number>(0);
+    const [mousePosY, setMousePosY] = useState<number>(0);
     const svgSpace: ReactFauxDom.Element = new ReactFauxDom.Element('svg');
     const templateItems = toJS(templateInfoStore.templateItems);
     d3.select('svg')
@@ -27,11 +25,7 @@ const SvgBlock: React.FC = () => {
         .attr('height', templateInfoStore.templateAttr.height)
         .style('background-color', 'white')
         .on('click', () => {
-        //    templateInfoStore.setSelectedItem('');
-            console.log(123);
-            setMenuItem(null);
-            setMenuOpen(false);
-            setMenuAnchor(null);
+            templateInfoStore.setSelectedItem('');
         });
 
     const gridSize = 20;
@@ -99,28 +93,18 @@ const SvgBlock: React.FC = () => {
                         templateInfoStore.setAttrib(item.attributes['id'], 'selected', true);
                         item.attributes['selected'] = true;
                     })
-                    .attr('stroke-dasharray', 5.5);
-            if (item.attributes['selected'] === true && item.attributes['dms:widget'] === 'table') {
-                newGroup.append('rect')
-                    .attr('x', +item.attributes['x'] + item.attributes['width'])
-                    .attr('y', +item.attributes['y'] - 20)
-                    .attr('width', 20)
-                    .attr('height', 20)
-                    
-                    .attr('stroke', `${item.attributes['selected'] === true ? '#f50000' : ''}`)
-                    .attr('fill', 'transparent')
-                    .attr('stroke-width', 2)
-                    
-                    .on('click', event => {
-                        templateInfoStore.setSelectedItem(item.attributes['id']);
-                        templateInfoStore.setAttrib(item.attributes['id'], 'selected', true);
-                        console.log(event.target);    
-                        setMenuAnchor(event.target);
-                        setMenuItem(item);
-                        setMenuOpen(!menuOpen);
-                    })
-                    .attr('stroke-dasharray', 5.5);
-            }
+                    .attr('stroke-dasharray', 5.5)
+                    .on('contextmenu', event => {
+                        if (item.attributes['dms:widget'] === 'table') {
+                            event.preventDefault();
+                            setMousePosX(event.clientX);
+                            setMousePosY(event.clientY);
+                            templateInfoStore.setSelectedItem(item.attributes['id']);
+                            templateInfoStore.setAttrib(item.attributes['id'], 'selected', true);
+                            setMenuItem(item);
+                            setMenuOpen(true);
+                        }
+                    });
         }
     });
 
@@ -148,7 +132,15 @@ const SvgBlock: React.FC = () => {
 
     return (
         <div className="svgDiv">
-            {menuItem?.attributes['selected'] === true? <SideMenu item={menuItem} open={menuOpen} anchorEl={menuAnchor}></SideMenu>:''}
+            {menuItem?.attributes['selected'] === true && 
+            <SideMenu
+                item={menuItem}
+                open={menuOpen}
+                left={mousePosX}
+                top={mousePosY}
+                setMenuItem={setMenuItem}
+                setMenuOpen={setMenuOpen}
+            />}
             {svgSpace!.toReact()}
         </div>
     );
