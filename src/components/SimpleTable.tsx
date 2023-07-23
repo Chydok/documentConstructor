@@ -18,7 +18,6 @@ const SimpleTable: React.FC<{itemTableID: string, tableView?: boolean}> = (props
     const tableAttributes = toJS(table?.attributes);
     let tableWidth = 0;
     let tableHeight = 0;
-    
 
     const tableRow = (rowType: string) => table?.children.filter(item => item.name === rowType).map(row => {
         tableHeight += +row.attributes['height'];
@@ -28,7 +27,6 @@ const SimpleTable: React.FC<{itemTableID: string, tableView?: boolean}> = (props
                 sx={{
                     height: +row.attributes['height'],
                     backgroundColor: row.attributes['selected'] ? 'lightgray' : 'transparent',
-                    font: 'message-box'
                 }}
                 >
                 {row.children.map(cell => {
@@ -37,7 +35,6 @@ const SimpleTable: React.FC<{itemTableID: string, tableView?: boolean}> = (props
                     }
                     const cellFontStyle = cell?.attributes['fontStyle'] ? cell?.attributes['fontStyle'] : table?.attributes['fontStyle'];
                     const cellFontFamily = cell?.attributes['fontFamily'] ? cell?.attributes['fontFamily'] : table?.attributes['fontFamily'];
-                    const fontFamily = table?.attributes['fontFamily'];
                     return (
                         <TableCell
                             id={table.attributes['id']}

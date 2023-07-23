@@ -113,8 +113,6 @@ const SvgBlock: React.FC = () => {
                             event.preventDefault();
                             setMousePosX(event.clientX);
                             setMousePosY(event.clientY);
-                            templateInfoStore.setSelectedItem(item.attributes['id']);
-                            templateInfoStore.setAttrib(item.attributes['id'], 'selected', true);
                             setMenuItem(item);
                             setMenuOpen(true);
                         }
