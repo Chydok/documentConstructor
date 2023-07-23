@@ -19,6 +19,20 @@ if (window.location.pathname === '/') {
         const xmlDoc: Document = parser.parseFromString(text, 'text/xml');
 
         templateInfoStore.setTemplateInfo(xmlDoc.documentElement);
+        templateInfoStore.templateItems.forEach(mainItem => {
+            if (mainItem.attributes['dms:widget'] === 'table') {
+                mainItem.children.forEach(rowItem => {
+                    if (typeof rowItem.attributes['height'] === 'undefined') {
+                        templateInfoStore.setAttrib(rowItem.attributes['id'], 'height', 35);
+                    }
+                    rowItem.children.forEach(cellItem => {
+                        if (typeof cellItem.attributes['width'] === 'undefined') {
+                            templateInfoStore.setAttrib(cellItem.attributes['id'], 'width', 25);
+                        }
+                    });
+                })
+            }
+        });
     });
 }
 if (window.location.pathname === '/view') {
@@ -28,6 +42,20 @@ if (window.location.pathname === '/view') {
         const xmlDoc: Document = parser.parseFromString(text, 'text/xml');
 
         templateInfoStore.setTemplateInfo(xmlDoc.documentElement);
+        templateInfoStore.templateItems.forEach(mainItem => {
+            if (mainItem.attributes['dms:widget'] === 'table') {
+                mainItem.children.forEach(rowItem => {
+                    if (typeof rowItem.attributes['height'] === 'undefined') {
+                        templateInfoStore.setAttrib(rowItem.attributes['id'], 'height', 35);
+                    }
+                    rowItem.children.forEach(cellItem => {
+                        if (typeof cellItem.attributes['width'] === 'undefined') {
+                            templateInfoStore.setAttrib(cellItem.attributes['id'], 'width', 25);
+                        }
+                    });
+                })
+            }
+        });
     });
     const testXmlView = require('./dataView.xml');
     fetch(testXmlView).then(response => response.text()).then(text => {

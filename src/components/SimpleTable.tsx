@@ -27,12 +27,13 @@ const SimpleTable: React.FC<{itemTableID: string, tableView?: boolean}> = (props
                 key={row.attributes['id']}
                 sx={{
                     height: +row.attributes['height'],
+                    backgroundColor: row.attributes['selected'] ? 'lightgray' : 'transparent',
                     font: 'message-box'
                 }}
                 >
                 {row.children.map(cell => {
                     if (rowType === 'columns') {
-                        tableWidth += cell.attributes['width'] ? +cell.attributes['width'] : 25;
+                        tableWidth += cell.attributes['width'];
                     }
                     const cellFontStyle = cell?.attributes['fontStyle'] ? cell?.attributes['fontStyle'] : table?.attributes['fontStyle'];
                     const cellFontFamily = cell?.attributes['fontFamily'] ? cell?.attributes['fontFamily'] : table?.attributes['fontFamily'];
@@ -42,10 +43,10 @@ const SimpleTable: React.FC<{itemTableID: string, tableView?: boolean}> = (props
                             id={table.attributes['id']}
                             key={cell.attributes['id']}
                             style={{
-                                minWidth: +cell.attributes['width'] || 25,
-                                maxWidth: +cell.attributes['width'] || 25,
+                                minWidth: +cell.attributes['width'],
+                                maxWidth: +cell.attributes['width'],
                                 lineHeight: 1,
-                                backgroundColor: 'white',
+                                backgroundColor: cell.attributes['selected'] ? 'lightgray' : cell.attributes['targeted'] ? 'lightblue' : 'transparent',
                                 overflow: 'hidden',
                                 textOverflow: 'clip',
                                 fontStyle: cellFontStyle,
@@ -79,8 +80,8 @@ const SimpleTable: React.FC<{itemTableID: string, tableView?: boolean}> = (props
                                         <TableCell
                                             key={cell.attributes['id'] + keyRI}
                                             style={{
-                                                minWidth: +cell.attributes['width'] || 25,
-                                                maxWidth: +cell.attributes['width'] || 25,
+                                                minWidth: +cell.attributes['width'],
+                                                maxWidth: +cell.attributes['width'],
                                                 lineHeight: 1,
                                                 backgroundColor: 'white',
                                                 overflow: 'hidden',

@@ -19,3 +19,8 @@
 table {
     height: 100%;
 }
+
+.MuiInputBase-root.MuiOutlinedInput-root.MuiInputBase-colorPrimary.MuiInputBase-formControl.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root {
+    height:inherit;
+    width:inherit;
+}
