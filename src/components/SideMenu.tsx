@@ -4,7 +4,7 @@ import { Menu, MenuItem} from "@mui/material";
 import templateInfoStore, { ITemplateElement } from "../store/templateInfoStore";
 
 interface ISideMenu {
-    item: ITemplateElement | null;
+    item: ITemplateElement;
     open: boolean;
     setMenuItem:Function;
     setMenuOpen:Function;
@@ -18,12 +18,24 @@ const SideMenu: React.FC<ISideMenu> = (props) => {
         props.setMenuOpen(false);
     };
 
-    const handleAddTHeadRow = () => {
-        
-    };
-
-    const handleAddTBodyRow = () => {
-    
+    const handleAddTNewRow = (rowType: string) => {
+        const newRow: ITemplateElement = {
+            name: rowType,
+            attributes: {
+                height: 35
+            },
+            children: [{
+                name: 'cell1',
+                attributes: {
+                    'width': 25,
+                    'dms:title': rowType === 'columns' ? 'cell1' : ''
+                },
+                children: [],
+                value: rowType !== 'columns' ? 'cell1' : ''
+            }],
+            value: ''
+        }
+        templateInfoStore.addChild(props.item?.attributes['id'], newRow);
     };
     return (
         <Menu
@@ -32,8 +44,8 @@ const SideMenu: React.FC<ISideMenu> = (props) => {
             open={props.open}
             onClose={handleClose}
         >
-            <MenuItem onClick={handleAddTHeadRow}>Добавить строку в thead</MenuItem>
-            <MenuItem onClick={handleAddTBodyRow}>Добавить строку в tbody</MenuItem>
+            <MenuItem onClick={() => handleAddTNewRow('columns')}>Добавить строку в thead</MenuItem>
+            <MenuItem onClick={() => handleAddTNewRow('record')}>Добавить строку в tbody</MenuItem>
         </Menu>
     )
 }

@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react';
+import { observer } from 'mobx-react';
+import { toJS } from 'mobx';
 import { 
     Table,
     TableBody,
@@ -8,8 +10,6 @@ import {
     TableRow,
     Paper,
 } from '@mui/material';
-import { observer } from 'mobx-react';
-import { toJS } from 'mobx';
 
 import templateInfoStore from '../store/templateInfoStore';
 
@@ -28,7 +28,7 @@ const SimpleTable: React.FC<{itemTableID: string, tableView?: boolean}> = (props
                     height: +row.attributes['height'],
                     backgroundColor: row.attributes['selected'] ? 'lightgray' : 'transparent',
                 }}
-                >
+            >
                 {row.children.map(cell => {
                     if (rowType === 'columns') {
                         tableWidth += cell.attributes['width'];
@@ -71,7 +71,7 @@ const SimpleTable: React.FC<{itemTableID: string, tableView?: boolean}> = (props
                                 sx={{
                                     height: +row.attributes['height'],
                                 }}
-                                >
+                            >
                                 {row.children.map(cell => {
                                     return (
                                         <TableCell

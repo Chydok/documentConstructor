@@ -1,6 +1,6 @@
 <plan xmlns:dms="dms_namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" date="2018-04-20" md5sum="" version="1.0" id="dms_0">
 	<month_schedule dms:title="Производственный журнал" dms:widget="table" id="dms_month_schedule" dms:headerSticky="true">
-		<columns section="1" id="dms_7">
+		<columns id="dms_7">
 			<name dms:title="Наименование продукции" id="dms_8" dms:widget="dict-tree-field" dms:dict="allSpecifications" dms:showValueMode="last_value"/>
 			<sub_info dms:title="Партия" id="dms_9" dms:widget="ext-doc-field" dms:docTemplate="productBatches" dms:xpath="/batch/batch_name" dms:ext_xpaths="['/batch/products_number']"/>
 			<cn dms:title="Доп. инфо" dms:widget="string" id="dms_10"/>
@@ -84,7 +84,7 @@
 		</record>
 	</month_schedule>
 	<month_schedule_ksz dms:title="План-график" dms:widget="table" id="dms_month_schedule_ksz" dms:headerSticky="true">
-		<columns section="1" id="dms_ksz_1">
+		<columns id="dms_ksz_1">
 			<name_ksz dms:title="Наименование продукции" id="dms_ksz_2" dms:widget="dict-tree-field" dms:dict="allSpecifications" dms:showValueMode="last_value"/>
 			<sub_info_ksz dms:title="Партия" id="dms_ksz_3" dms:widget="ext-doc-field" dms:docTemplate="productBatches" dms:xpath="/batch/batch_name" dms:ext_xpaths="['/batch/products_number']"/>
 			<cn_ksz dms:title="Доп. инфо" dms:widget="string" id="dms_ksz_4"/>

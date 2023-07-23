@@ -155,10 +155,15 @@ class templateInfoStore {
         }
     }
 
-    addChild = (elemId: string, child: ITemplateElement) => {
+    addChild = (elemId: string, newChild: ITemplateElement) => {
         const findElem = this.searchById(elemId);
         if (typeof findElem !== 'undefined') {
-            findElem.children.push(child);
+            this.lastId = this.generateIds([newChild], this.lastId);
+            if (newChild.name === 'columns') {
+                findElem.children.unshift(newChild);
+            } else {
+                findElem.children.push(newChild);
+            }
         }
     }
 
