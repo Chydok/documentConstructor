@@ -6,7 +6,10 @@ import templateInfoStore, { ITemplateElement } from "../store/templateInfoStore"
 interface ISideMenu {
     item: ITemplateElement | null;
     open: boolean;
-    anchorEl: HTMLElement | null;
+    setMenuItem:Function;
+    setMenuOpen:Function;
+    left: number,
+    top: number
 }
 
 const SideMenu: React.FC<ISideMenu> = (props) => {
