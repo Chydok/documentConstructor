@@ -16,7 +16,7 @@ const ViewDocument = () => {
     const pageWidth = templateInfoStore.templateAttr.width;
     //const pageHeight = templateInfoStore.templateAttr.height;
 
-    const templateItems = toJS(templateInfoStore.templateItems);
+    const templateItems = templateInfoStore.templateItems;
 
     const renderItem = (item: ITemplateElement) => {
         return (
@@ -56,11 +56,14 @@ const ViewDocument = () => {
 
                         if (rect1.top < rect2.top && rect1.left < rect2.right && rect1.right > rect2.left) {
                             const findObj2 = coordTemp.find(item => item.id === obj2.id);
-                            templateInfoStore.setAttrib(findObj2!.id, 'y', +findObj2!.y + diffHeidth);
+                            findObj2!.y = +findObj2!.y + diffHeidth;
                         }
                     }
                 }
             }
+            coordTemp.forEach(item => {
+                templateInfoStore.setAttrib(item!.id, 'y', +item!.y);
+            });
         }
     }, [templateItems]);
 

@@ -136,7 +136,7 @@ const ChangeObject: React.FC<{selectedItems: string}> = ({selectedItems}) => {
                 />
             </Box>}
 
-            {templateItem && ['string', 'text'].indexOf(templateItem?.attributes['dms:widget']) === -1 &&
+            {templateItem && ['string', 'text'].indexOf(templateItem?.attributes['dms:widget']) !== -1 &&
             <Box>
                 <FormControl sx={{ m: 1, width: 150 }}>
                     <InputLabel>Стиль</InputLabel>
@@ -195,7 +195,7 @@ const ChangeObject: React.FC<{selectedItems: string}> = ({selectedItems}) => {
                     }}
                 />
             }
-            {templateItem && ['time', 'string'].indexOf(templateItem?.attributes['dms:widget']) !== -1 &&
+            {templateItem && ['time', 'string'].indexOf(templateItem?.attributes['dms:widget']) === -1 &&
                 <Box sx={{m: 1, width: '20ch'}}>
                     <FormControl fullWidth> 
                         <InputLabel id="font">Font</InputLabel> 
