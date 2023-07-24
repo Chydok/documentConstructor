@@ -1,15 +1,14 @@
 import { useEffect, useRef } from "react";
 import { observer } from "mobx-react";
 
-import SimpleTable from "../SimpleTable";
+import TextForm from "../TextForm";
 import TextInput from "../TextInput";
 import TimeWidget from "../TimeWidget";
+import SimpleTable from "../SimpleTable";
 
 import templateInfoStore, { ITemplateElement } from "../../store/templateInfoStore";
 
 import '../../styles/ViewDocument.css';
-import { toJS } from "mobx";
-import TextForm from "../TextForm";
 
 const ViewDocument = () => {
     const divRef = useRef<HTMLDivElement>(null);
