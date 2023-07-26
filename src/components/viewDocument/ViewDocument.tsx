@@ -41,30 +41,36 @@ const ViewDocument = () => {
         if (divRef.current) {
             const objects = divRef.current.children;
             const coordTemp = templateInfoStore.coordTemp;
-            for (let i = 0; i < objects.length; i++) {
-                const obj1 = objects[i] as HTMLElement;
-                const findObj = coordTemp.find(item => item.id === obj1.id);
-                const rect1 = obj1.getBoundingClientRect();
-                console.log(rect1.height, findObj?.height);
-                if (+rect1.height > +findObj?.height!) {
-                    const diffHeidth = +rect1.height - +findObj?.height!;
+            if (coordTemp.length > 0) {
+                for (let i = 0; i < objects.length; i++) {
+                    const obj1 = objects[i] as HTMLElement;
+                    const findObj = coordTemp.find(item => item.id === obj1.id);
+                    const rect1 = obj1.getBoundingClientRect();
 
-                    for (let j = i + 1; j < objects.length; j++) {
-                        const obj2 = objects[j] as HTMLElement;
-                        const rect2 = obj2.getBoundingClientRect();
+                    if (findObj && +rect1.height > +findObj?.height!) {
+                        for (let j = i + 1; j < objects.length; j++) {
+                            const obj2 = objects[j] as HTMLElement;
+                            const rect2 = obj2.getBoundingClientRect();
 
-                        if (rect1.top < rect2.top && rect1.left < rect2.right && rect1.right > rect2.left) {
-                            const findObj2 = coordTemp.find(item => item.id === obj2.id);
-                            findObj2!.y = +findObj2!.y + diffHeidth;
+                            if (rect1.top < rect2.top && rect1.left < rect2.right && rect1.right > rect2.left) {
+                                const findObj2 = coordTemp.find(item => item.id === obj2.id);
+                                if (findObj2) {
+                                    const diffHeidth = findObj2.y - (findObj.y + findObj.height);
+                                    if (findObj2.y - (findObj.y + findObj.height) !== rect2.y - rect1.bottom) {
+                                        if (rect2.y < rect1.bottom + diffHeidth) {
+                                            if (templateInfoStore.searchById(findObj2.id)!.attributes['y'] < rect1.bottom + diffHeidth) {
+                                                templateInfoStore.setAttrib(findObj2.id, 'y', rect1.bottom + diffHeidth);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
-            coordTemp.forEach(item => {
-                templateInfoStore.setAttrib(item!.id, 'y', +item!.y);
-            });
         }
-    }, [templateItems]);
+    }, [toJS(templateInfoStore.templateItems)]);
 
     return (
         <div className="viewDiv">
