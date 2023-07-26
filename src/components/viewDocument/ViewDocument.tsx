@@ -16,7 +16,8 @@ const ViewDocument = () => {
     const pageWidth = templateInfoStore.templateAttr.width;
     //const pageHeight = templateInfoStore.templateAttr.height;
 
-    const templateItems = templateInfoStore.templateItems;
+    const templateItems = toJS(templateInfoStore.templateItems);
+    const coordTemp = toJS(templateInfoStore.coordTemp);
 
     const renderItem = (item: ITemplateElement) => {
         return (
@@ -41,7 +42,6 @@ const ViewDocument = () => {
     useEffect(() => {
         if (divRef.current) {
             const objects = divRef.current.children;
-            const coordTemp = templateInfoStore.coordTemp;
             if (coordTemp.length > 0) {
                 for (let i = 0; i < objects.length; i++) {
                     const obj1 = objects[i] as HTMLElement;
@@ -71,7 +71,7 @@ const ViewDocument = () => {
                 }
             }
         }
-    }, [toJS(templateInfoStore.templateItems)]);
+    }, [divRef, coordTemp]);
 
     return (
         <div className="viewDiv">
