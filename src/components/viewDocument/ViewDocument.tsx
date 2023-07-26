@@ -71,7 +71,7 @@ const ViewDocument = () => {
                 }
             }
         }
-    }, [divRef, coordTemp]);
+    }, [divRef, coordTemp, templateItems]);
 
     return (
         <div className="viewDiv">
